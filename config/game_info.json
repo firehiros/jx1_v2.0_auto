@@ -1,0 +1,34 @@
+{
+  "game": {
+    "name": "Võ Lâm Truyền Kỳ 1",
+    "short_name": "JX1",
+    "version": "unknown",
+    "publisher": "VNG",
+    "process_name": "JX1.exe",
+    "window_class": "JX1Window",
+    "directx_version": 9,
+    "architecture": "x86"
+  },
+  "paths": {
+    "game_directory": "C:\\Program Files (x86)\\VNG\\JX1",
+    "config_directory": "./config",
+    "logs_directory": "./logs"
+  },
+  "detection": {
+    "process_names": [
+      "JX1.exe",
+      "JX1Client.exe",
+      "Sword.exe"
+    ],
+    "window_titles": [
+      "Võ Lâm Truyền Kỳ",
+      "JX1",
+      "Sword"
+    ]
+  },
+  "notes": [
+    "DirectX 9 confirmed",
+    "32-bit application",
+    "Process name may vary by server"
+  ]
+}

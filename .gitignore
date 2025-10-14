@@ -1,0 +1,250 @@
+# JX1 V2.0 Auto - Git Ignore
+
+# ========================================
+# C++ / CMake / Visual Studio
+# ========================================
+
+# Build directories
+build/
+bin/
+lib/
+out/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+!CMakeLists.txt
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+*.vcxproj.user
+
+# Compiled files
+*.obj
+*.o
+*.lo
+*.slo
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.idb
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# ========================================
+# C# / .NET / WPF
+# ========================================
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet Packages
+*.nupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ========================================
+# Logs and Databases
+# ========================================
+
+*.log
+logs/
+*.db
+*.sqlite
+
+# ========================================
+# Configuration and Secrets
+# ========================================
+
+# Do NOT ignore config templates
+!config/*.example.json
+!config/default_config.json
+
+# But ignore user-specific configs
+config/user_*.json
+config/local_*.json
+*.secret.json
+
+# Environment files
+.env
+.env.local
+
+# License keys (if any)
+*.key
+*.lic
+
+# ========================================
+# IDE and Editors
+# ========================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ========================================
+# Operating System
+# ========================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# ========================================
+# Third-party Libraries
+# ========================================
+
+# Keep third_party folder structure but ignore downloads
+core_dll/third_party/*/
+!core_dll/third_party/README.md
+
+# ========================================
+# Project-specific
+# ========================================
+
+# Memory dumps
+*.dmp
+
+# Reverse engineering
+*.idb
+*.til
+*.id0
+*.id1
+*.id2
+*.nam
+*.i64
+
+# Cheat Engine tables (keep for reference)
+# *.CT
+
+# Test game clients (if you copy them locally)
+game_client/
+
+# Screenshots (too large)
+assets/screenshots/
+!assets/screenshots/.gitkeep
+
+# Compiled templates
+assets/templates/*.cache
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+*.backup
+
+# ========================================
+# Documentation Build
+# ========================================
+
+docs/_build/
+docs/.doctrees/
+
+# ========================================
+# Package Managers
+# ========================================
+
+# vcpkg
+vcpkg_installed/
+
+# Conan
+conaninfo.txt
+conanbuildinfo.*
+conan.lock
+
+# ========================================
+# Testing
+# ========================================
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# ========================================
+# Miscellaneous
+# ========================================
+
+# Archive files
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# Office temp files
+~$*
+
+# Keep important files
+!README.md
+!LICENSE
+!CHANGELOG.md
+!.gitignore
