@@ -268,51 +268,63 @@ Breakdown:
 
 ## ⭐ Most Important Documents
 
-**Top 10 Must-Read:**
+**Top 12 Must-Read:**
 
 1. **[README.md](README.md)** - Project overview, setup, roadmap
 
-2. **[docs/00-getting-started/QUICK_START.md](docs/00-getting-started/QUICK_START.md)** - 5-minute start guide
+2. **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** ⭐ **NEW! START HERE!**
+   - **Complete user guide in Vietnamese**
+   - Step-by-step usage instructions
+   - All features explained simply
+   - FAQ and troubleshooting
 
-3. **[docs/03-reverse-engineering/PHASE2_START_HERE.md](docs/03-reverse-engineering/PHASE2_START_HERE.md)** ⭐
+3. **[docs/FEATURES_DOCUMENTATION.md](docs/FEATURES_DOCUMENTATION.md)** ⭐ **NEW!**
+   - **Complete feature documentation (25+ features)**
+   - Technical details for all features
+   - Code examples and use cases
+   - Comprehensive reference
+
+4. **[docs/00-getting-started/QUICK_START.md](docs/00-getting-started/QUICK_START.md)** - 5-minute start guide
+
+5. **[launcher/MULTI_ACCOUNT_QUICKSTART.md](launcher/MULTI_ACCOUNT_QUICKSTART.md)** ⭐ **NEW!**
+   - **Multi-account setup (10 minutes)**
+   - Manage up to 5 accounts
+   - Easy configuration guide
+
+6. **[docs/03-reverse-engineering/PHASE2_START_HERE.md](docs/03-reverse-engineering/PHASE2_START_HERE.md)** ⭐
    - **Main entry point for Phase 2**
    - Complete workflow overview
    - Links to all Phase 2 resources
 
-4. **[tools/README.md](tools/README.md)** - Tools overview
+7. **[tools/README.md](tools/README.md)** - Tools overview
    - Auto-scan memory tool
    - 3-step workflow
    - No Python/Lua needed!
 
-5. **[docs/03-reverse-engineering/CENTRALIZED_CONFIG_GUIDE.md](docs/03-reverse-engineering/CENTRALIZED_CONFIG_GUIDE.md)**
+8. **[docs/03-reverse-engineering/CENTRALIZED_CONFIG_GUIDE.md](docs/03-reverse-engineering/CENTRALIZED_CONFIG_GUIDE.md)**
    - Complete config system guide
    - Auto-generate config from scans
    - Single source of truth
 
-6. **[docs/03-reverse-engineering/CHEAT_ENGINE_GUIDE.md](docs/03-reverse-engineering/CHEAT_ENGINE_GUIDE.md)**
+9. **[docs/03-reverse-engineering/CHEAT_ENGINE_GUIDE.md](docs/03-reverse-engineering/CHEAT_ENGINE_GUIDE.md)**
    - Complete CE tutorial
    - 5 step-by-step tutorials
    - Template code examples
 
-7. **[docs/01-build/BUILD_INSTRUCTIONS.md](docs/01-build/BUILD_INSTRUCTIONS.md)**
-   - Complete build guide
-   - Troubleshooting
-   - Verification steps
+10. **[docs/01-build/BUILD_INSTRUCTIONS.md](docs/01-build/BUILD_INSTRUCTIONS.md)**
+    - Complete build guide
+    - Troubleshooting
+    - Verification steps
 
-8. **[docs/02-architecture/ARCHITECTURE_HOOK.md](docs/02-architecture/ARCHITECTURE_HOOK.md)**
-   - System architecture
-   - Component design
-   - Data flow
+11. **[docs/02-architecture/ARCHITECTURE_HOOK.md](docs/02-architecture/ARCHITECTURE_HOOK.md)**
+    - System architecture
+    - Component design
+    - Data flow
 
-9. **[docs/04-development/CHECKLIST.md](docs/04-development/CHECKLIST.md)**
-   - Project checklist
-   - Track progress
-   - Task breakdown
-
-10. **[docs/project-status/PROJECT_STATUS.md](docs/project-status/PROJECT_STATUS.md)**
-    - Current status
-    - Next steps
-    - Priorities
+12. **[launcher/HOW_TO_TEST.md](launcher/HOW_TO_TEST.md)** ⭐ **NEW!**
+    - Test multi-account UI
+    - Build and run guide
+    - Expected results
 
 ---
 
