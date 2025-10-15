@@ -1,0 +1,644 @@
+===========================================
+   JX1 AUTO V2.0 - LAUNCHER DESIGN SPEC
+===========================================
+
+This file allows you to customize the launcher UI by editing text.
+After editing, run: launcher/apply_design.ps1 to apply changes.
+
+Last Updated: 2025-10-15
+Current Theme: Dark Modern
+
+===========================================
+SECTION 1: WINDOW PROPERTIES
+===========================================
+
+[Window]
+Title = JX1 Auto v2.0 - Launcher
+Width = 900
+Height = 600
+StartupLocation = CenterScreen
+Resizable = Yes
+Icon = (optional: path/to/icon.ico)
+
+[Header]
+Height = 60
+BackgroundColor = #1E1E1E
+Title = JX1 Auto v2.0
+Subtitle = Official Partnership Edition
+TitleFontSize = 24
+SubtitleFontSize = 14
+TitleColor = #FFFFFF
+SubtitleColor = #888888
+
+===========================================
+SECTION 2: HOME TAB
+===========================================
+
+[HomeTab.Status]
+# Status section at the top
+Title = Status
+Height = Auto
+# Status messages (can be updated dynamically)
+DefaultMessage = Ready to inject
+GameNotFound = Game Process: Not found
+GameFound = Game Process: Found (PID: {0})
+DllNotInjected = DLL Status: Not injected
+DllInjected = DLL Status: Injected successfully
+
+[HomeTab.QuickActions]
+# Quick action buttons
+Title = Quick Actions
+InjectButtonText = Inject DLL
+InjectButtonHeight = 40
+InjectButtonEnabled = Yes
+EjectButtonText = Eject DLL
+EjectButtonHeight = 40
+EjectButtonEnabled = No (enable after inject)
+
+[HomeTab.BotControl]
+# Bot control section
+Title = Bot Control
+Column1Title = Bot Mode:
+Column2Title = Quick Settings:
+
+# Bot modes (radio buttons)
+Mode1 = Disabled (default)
+Mode2 = Combat Only
+Mode3 = Farming Mode
+Mode4 = Questing Mode
+Mode5 = Custom
+
+# Quick settings (checkboxes)
+Setting1 = Auto Combat (unchecked)
+Setting2 = Auto Loot (unchecked)
+Setting3 = Auto Heal (unchecked)
+Setting4 = Auto Mana (unchecked)
+Setting5 = Enable ESP (checked)
+
+[HomeTab.Statistics]
+# Statistics display
+Title = Statistics
+Stat1Label = Monsters Killed:
+Stat1Default = 0
+Stat2Label = Items Looted:
+Stat2Default = 0
+Stat3Label = Runtime:
+Stat3Default = 00:00:00
+
+===========================================
+SECTION 3: SETTINGS TAB
+===========================================
+
+[SettingsTab.Combat]
+Title = Combat Settings
+
+# Combat Range slider
+CombatRangeLabel = Combat Range:
+CombatRangeMin = 100
+CombatRangeMax = 1000
+CombatRangeDefault = 500
+CombatRangeStep = 50
+CombatRangeUnit = units
+
+# Heal Threshold slider
+HealThresholdLabel = Heal Threshold:
+HealThresholdMin = 10
+HealThresholdMax = 80
+HealThresholdDefault = 40
+HealThresholdStep = 5
+HealThresholdUnit = %
+
+# Flee Threshold slider
+FleeThresholdLabel = Flee Threshold:
+FleeThresholdMin = 5
+FleeThresholdMax = 50
+FleeThresholdDefault = 15
+FleeThresholdStep = 5
+FleeThresholdUnit = %
+
+[SettingsTab.ESP]
+Title = ESP Settings
+
+# ESP options (checkboxes - format: Label = DefaultState)
+ShowMonsters = checked
+ShowPlayers = checked
+ShowNPCs = checked
+ShowItems = checked
+ShowHPBars = checked
+ShowDistance = checked
+
+# ESP Distance slider
+ESPDistanceLabel = Max ESP Distance:
+ESPDistanceMin = 100
+ESPDistanceMax = 1000
+ESPDistanceDefault = 500
+ESPDistanceStep = 50
+ESPDistanceUnit = units
+
+[SettingsTab.Loot]
+Title = Loot Settings
+
+# Loot quality dropdown
+LootQualityLabel = Minimum Item Quality:
+LootQualityOptions = Grey (Trash), White (Common), Blue (Rare), Purple (Epic), Gold (Legendary)
+LootQualityDefault = White (Common)
+
+# Loot types (checkboxes)
+LootWeapons = checked
+LootArmor = checked
+LootPotions = checked
+LootMaterials = checked
+
+[SettingsTab.Buttons]
+SaveButtonText = Save Settings
+SaveButtonWidth = 120
+SaveButtonHeight = 35
+ResetButtonText = Reset to Default
+ResetButtonWidth = 120
+ResetButtonHeight = 35
+
+===========================================
+SECTION 4: PROFILES TAB
+===========================================
+
+[ProfilesTab]
+Title = Profiles
+
+[ProfilesTab.List]
+# Profile list section
+Title = Profiles
+Width = 200
+NewButtonText = New Profile
+DeleteButtonText = Delete Profile
+
+[ProfilesTab.Editor]
+# Profile editor section
+Title = Profile Settings
+NameLabel = Profile Name:
+DescriptionLabel = Description:
+DescriptionHeight = 60
+BotModeLabel = Bot Mode:
+BotModeOptions = Disabled, Combat Only, Farming, Questing, Custom
+BotModeDefault = Farming
+SaveButtonText = Save Profile
+SaveButtonWidth = 120
+SaveButtonHeight = 35
+
+===========================================
+SECTION 5: ABOUT TAB
+===========================================
+
+[AboutTab]
+MainTitle = JX1 Auto v2.0
+MainTitleSize = 32
+Subtitle = Official Partnership Edition
+SubtitleSize = 16
+SubtitleColor = #888888
+
+Description1 = Advanced automation tool for Võ Lâm Truyền Kỳ 1
+Description2 = Created with official publisher partnership
+
+[AboutTab.Technology]
+Title = Technology Stack:
+Tech1 = C++17 Core DLL
+Tech2 = DirectX 9 Hook
+Tech3 = ImGui Overlay
+Tech4 = MinHook Function Hooking
+Tech5 = .NET 7 WPF Launcher
+
+[AboutTab.Info]
+Version = 2.0.0
+BuildDate = 2025-10-15
+
+[AboutTab.Buttons]
+DocsButtonText = View Documentation
+DocsButtonWidth = 150
+DocsButtonHeight = 35
+UpdateButtonText = Check for Updates
+UpdateButtonWidth = 150
+UpdateButtonHeight = 35
+
+===========================================
+SECTION 6: FOOTER STATUS BAR
+===========================================
+
+[StatusBar]
+Height = 30
+DefaultText = Ready
+VersionPrefix = v
+ShowVersion = Yes
+
+===========================================
+SECTION 7: COLOR SCHEME
+===========================================
+
+[Colors]
+# You can customize colors here
+# Format: ColorName = #RRGGBB or #AARRGGBB (with alpha)
+
+# Main colors
+Background = #FFFFFF
+Foreground = #000000
+HeaderBackground = #1E1E1E
+HeaderForeground = #FFFFFF
+
+# Accent colors
+PrimaryAccent = #0078D4
+SecondaryAccent = #888888
+SuccessColor = #00FF00
+ErrorColor = #FF0000
+WarningColor = #FFAA00
+
+# Button colors
+ButtonBackground = #0078D4
+ButtonForeground = #FFFFFF
+ButtonHover = #005A9E
+ButtonPressed = #004578
+ButtonDisabled = #CCCCCC
+
+# Text colors
+TextPrimary = #000000
+TextSecondary = #888888
+TextHint = #AAAAAA
+TextDisabled = #CCCCCC
+
+===========================================
+SECTION 8: FONTS
+===========================================
+
+[Fonts]
+# Font family for different elements
+MainFont = Segoe UI
+TitleFont = Segoe UI
+MonospaceFont = Consolas
+
+# Font sizes
+TitleSize = 24
+SubtitleSize = 16
+NormalSize = 12
+SmallSize = 10
+
+# Font weights
+TitleWeight = Bold
+SubtitleWeight = Normal
+NormalWeight = Normal
+
+===========================================
+SECTION 9: SPACING & MARGINS
+===========================================
+
+[Layout]
+# Padding and margins (in pixels)
+WindowPadding = 10
+GroupBoxPadding = 10
+GroupBoxMargin = 10
+ControlSpacing = 5
+SectionSpacing = 10
+
+# Element heights
+ButtonHeight = 35
+InputHeight = 25
+SliderHeight = 30
+
+===========================================
+SECTION 10: CUSTOM TEXT LABELS
+===========================================
+
+[CustomText]
+# You can add custom text for different languages here
+# Format: Key = Value
+
+# English (default)
+[CustomText.en]
+Ready = Ready
+Injecting = Injecting...
+Injected = Injected successfully
+Failed = Injection failed
+NotFound = Game not found
+Searching = Searching for game...
+
+# Vietnamese
+[CustomText.vi]
+Ready = Sẵn sàng
+Injecting = Đang inject...
+Injected = Inject thành công
+Failed = Inject thất bại
+NotFound = Không tìm thấy game
+Searching = Đang tìm game...
+
+# Current language
+CurrentLanguage = en
+
+===========================================
+SECTION 11: ADVANCED OPTIONS
+===========================================
+
+[Advanced]
+# Show/hide specific sections
+ShowHomeTab = Yes
+ShowSettingsTab = Yes
+ShowProfilesTab = Yes
+ShowAboutTab = Yes
+
+# Enable/disable specific features
+AllowMultipleInstances = No
+MinimizeToTray = Yes
+AutoCheckUpdates = Yes
+SaveWindowPosition = Yes
+RememberLastProfile = Yes
+
+# Startup behavior
+AutoDetectGame = Yes
+AutoInjectOnStartup = No
+ShowSplashScreen = No
+
+===========================================
+SECTION 12: HOT KEYS
+===========================================
+
+[Hotkeys]
+# Define hotkeys for quick actions
+# Format: Action = Key combination
+
+ToggleMenu = INSERT
+QuickInject = F1
+QuickEject = F2
+EmergencyStop = F12
+ReloadConfig = Ctrl+R
+SaveProfile = Ctrl+S
+
+===========================================
+SECTION 13: NOTIFICATIONS
+===========================================
+
+[Notifications]
+# Notification settings
+ShowNotifications = Yes
+NotificationDuration = 3000 (milliseconds)
+NotificationPosition = TopRight
+NotificationSound = Yes
+
+# Notification messages
+InjectionSuccess = DLL injected successfully!
+InjectionFailed = Failed to inject DLL: {0}
+GameNotFound = Game process not found!
+GameDetected = Game detected! Ready to inject.
+ProfileSaved = Profile saved successfully!
+SettingsSaved = Settings saved successfully!
+
+===========================================
+SECTION 14: VALIDATION RULES
+===========================================
+
+[Validation]
+# Input validation rules
+ProfileNameMinLength = 3
+ProfileNameMaxLength = 50
+ProfileNameAllowedChars = A-Za-z0-9_-
+DescriptionMaxLength = 200
+
+# Value ranges (safety limits)
+CombatRangeMinSafe = 50
+CombatRangeMaxSafe = 2000
+HealThresholdMinSafe = 1
+HealThresholdMaxSafe = 99
+
+===========================================
+SECTION 15: DEBUG OPTIONS
+===========================================
+
+[Debug]
+# Debug mode settings (for development)
+EnableDebugMode = No
+ShowDebugConsole = No
+VerboseLogging = No
+LogToFile = Yes
+LogFilePath = logs/launcher.log
+
+===========================================
+NOTES:
+===========================================
+
+1. Color format: Use hex colors (#RRGGBB or #AARRGGBB)
+2. Sizes: All sizes are in pixels unless specified
+3. Booleans: Use Yes/No or checked/unchecked
+4. Lists: Separate items with commas
+5. Comments: Lines starting with # are comments
+6. Placeholders: Use {0}, {1}, etc. for dynamic values
+
+===========================================
+HOW TO APPLY CHANGES:
+===========================================
+
+After editing this file, run:
+
+   PowerShell:
+   > cd launcher
+   > .\apply_design.ps1
+
+   Or manually rebuild:
+   > cd launcher
+   > dotnet build
+
+Changes will be applied to MainWindow.xaml and code-behind.
+
+===========================================
+QUICK CUSTOMIZATION EXAMPLES:
+===========================================
+
+Example 1: Change window size
+[Window]
+Width = 1200
+Height = 800
+
+Example 2: Change button text
+[HomeTab.QuickActions]
+InjectButtonText = Start Bot
+EjectButtonText = Stop Bot
+
+Example 3: Change colors
+[Colors]
+PrimaryAccent = #FF6B6B (Red accent)
+ButtonBackground = #4ECDC4 (Teal buttons)
+
+Example 4: Change language
+[CustomText]
+CurrentLanguage = vi (Switch to Vietnamese)
+
+Example 5: Hide a tab
+[Advanced]
+ShowProfilesTab = No (Hide Profiles tab)
+
+===========================================
+END OF DESIGN SPECIFICATION
+===========================================
+
+===========================================
+SECTION 16: MULTI-ACCOUNT SETTINGS
+===========================================
+
+[MultiAccount]
+# Enable multi-account support
+EnableMultiAccount = Yes
+
+# Maximum concurrent accounts
+MaxAccounts = 5
+
+# Auto-start accounts on launch
+AutoStartAll = No
+
+# Monitor all accounts simultaneously
+MonitorAllAccounts = Yes
+
+# Sync settings across accounts
+SyncSettings = No
+
+[MultiAccount.Display]
+# How to display accounts
+DisplayMode = Cards
+CardsPerRow = 2
+ShowActiveOnly = No
+ShowInactiveAccounts = Yes
+
+# Card appearance
+CardHeight = 200
+CardWidth = 400
+CardSpacing = 10
+
+# Card colors by status
+ColorRunning = #00FF00
+ColorPaused = #FFAA00
+ColorStopped = #888888
+ColorError = #FF0000
+
+[MultiAccount.AccountCard]
+# What to show on each card
+ShowNickname = Yes
+ShowCharacterName = Yes
+ShowLevel = Yes
+ShowMap = Yes
+ShowHP = Yes
+ShowMP = Yes
+ShowStats = Yes
+ShowButtons = Yes
+
+# Compact mode
+CompactMode = No
+
+[MultiAccount.Controls]
+# Global control buttons
+ShowAddAccount = Yes
+ShowRefresh = Yes
+ShowStopAll = Yes
+ShowStartAll = Yes
+ShowGlobalSettings = Yes
+
+# Individual account buttons
+ShowPauseButton = Yes
+ShowStopButton = Yes
+ShowConfigButton = Yes
+ShowDetailsButton = Yes
+
+[MultiAccount.StartupBehavior]
+# What to do on launcher start
+AutoDetectRunningGames = Yes
+AutoInjectAll = No
+RestoreLastSession = Yes
+
+# Account limits
+WarnAboveAccounts = 3
+MaxConcurrentAccounts = 5
+
+===========================================
+SECTION 17: ACCOUNT PROFILES
+===========================================
+
+# Pre-defined accounts
+# Add or modify via UI
+
+[Account.1]
+Enabled = Yes
+Nickname = Main Character
+Username = account1@email.com
+CharacterName = (will be detected)
+Level = 0
+DefaultMode = Farming
+
+[Account.2]
+Enabled = No
+Nickname = Alt Character
+Username = account2@email.com
+CharacterName = (will be detected)
+Level = 0
+DefaultMode = Combat
+
+[Account.3]
+Enabled = No
+Nickname = Support Char
+Username = account3@email.com
+CharacterName = (will be detected)
+Level = 0
+DefaultMode = Disabled
+
+===========================================
+SECTION 18: PROCESS MANAGEMENT
+===========================================
+
+[ProcessManagement]
+# Process detection
+DetectionMethod = WindowTitle
+ProcessName = JX1.exe
+WindowTitlePattern = Võ Lâm Truyền Kỳ
+
+# Auto-detection interval (milliseconds)
+AutoDetectInterval = 5000
+
+# Process priority
+SetProcessPriority = No
+ProcessPriority = Normal
+
+# Handle multiple instances
+AllowMultipleInstances = Yes
+MaxInstances = 5
+
+[ProcessManagement.Injection]
+# Injection settings
+InjectionDelay = 2000
+RetryOnFail = Yes
+RetryCount = 3
+RetryDelay = 5000
+
+# DLL path
+UseSeparateDLL = No
+DLLPath = core_dll/core_dll.dll
+
+===========================================
+SECTION 19: STATISTICS AGGREGATION
+===========================================
+
+[Statistics]
+# Aggregate stats across accounts
+
+# Show totals
+ShowTotalKills = Yes
+ShowTotalGold = Yes
+ShowTotalItems = Yes
+ShowTotalRuntime = Yes
+
+# Labels
+TotalKillsLabel = Total Kills:
+TotalGoldLabel = Total Gold:
+TotalItemsLabel = Total Items:
+TotalRuntimeLabel = Total Runtime:
+
+# Update interval (milliseconds)
+StatsUpdateInterval = 1000
+
+# Export statistics
+EnableStatsExport = Yes
+ExportInterval = 300000
+ExportPath = logs/stats_{date}.csv
+
+===========================================
+END OF DESIGN SPECIFICATION (UPDATED)
+===========================================

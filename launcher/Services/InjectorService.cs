@@ -8,6 +8,7 @@ namespace JX1Launcher.Services
 {
     /// <summary>
     /// DLL injection service
+    /// Updated for multi-account support
     /// </summary>
     public class InjectorService
     {
@@ -15,6 +16,9 @@ namespace JX1Launcher.Services
         private const string DLL_NAME = "JX1AutoCore.dll";
 
         private Process? _gameProcess;
+
+        // Multi-account support: Track injection status per process
+        private readonly Dictionary<int, InjectionStatus> _injectionStatuses;
 
         // ========================================
         // Win32 API Imports
@@ -48,6 +52,15 @@ namespace JX1Launcher.Services
         private const uint PROCESS_ALL_ACCESS = 0x1F0FFF;
         private const uint MEM_COMMIT = 0x1000;
         private const uint PAGE_READWRITE = 0x04;
+
+        // ========================================
+        // Constructor
+        // ========================================
+
+        public InjectorService()
+        {
+            _injectionStatuses = new Dictionary<int, InjectionStatus>();
+        }
 
         // ========================================
         // Public Methods
@@ -233,5 +246,143 @@ namespace JX1Launcher.Services
                     CloseHandle(hProcess);
             }
         }
+
+        // ========================================
+        // Multi-Account Support (NEW)
+        // ========================================
+
+        /// <summary>
+        /// Inject DLL to specific process (for multi-account)
+        /// </summary>
+        public async Task<bool> InjectToProcess(int processId, string dllPath)
+        {
+            try
+            {
+                // Check if already injected
+                if (_injectionStatuses.ContainsKey(processId) &&
+                    _injectionStatuses[processId].IsInjected)
+                {
+                    return true;  // Already injected
+                }
+
+                // Verify DLL exists
+                if (!File.Exists(dllPath))
+                {
+                    dllPath = FindDllPath();
+                }
+
+                // Inject
+                await Task.Run(() =>
+                {
+                    InjectDllIntoProcess(processId, dllPath);
+                });
+
+                // Track status
+                _injectionStatuses[processId] = new InjectionStatus
+                {
+                    ProcessId = processId,
+                    IsInjected = true,
+                    InjectedAt = DateTime.Now,
+                    DllPath = dllPath
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _injectionStatuses[processId] = new InjectionStatus
+                {
+                    ProcessId = processId,
+                    IsInjected = false,
+                    ErrorMessage = ex.Message
+                };
+
+                Console.WriteLine($"Failed to inject to process {processId}: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Eject DLL from specific process (for multi-account)
+        /// </summary>
+        public async Task<bool> EjectFromProcess(int processId)
+        {
+            try
+            {
+                if (!_injectionStatuses.ContainsKey(processId))
+                {
+                    return false;  // Not injected
+                }
+
+                // TODO: Send eject command to DLL via IPC
+                // For now, just remove from tracking
+
+                await Task.Delay(100);  // Placeholder for actual eject logic
+
+                _injectionStatuses.Remove(processId);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to eject from process {processId}: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if specific process has DLL injected
+        /// </summary>
+        public bool IsInjected(int processId)
+        {
+            if (!_injectionStatuses.ContainsKey(processId))
+                return false;
+
+            return _injectionStatuses[processId].IsInjected;
+        }
+
+        /// <summary>
+        /// Get all injection statuses
+        /// </summary>
+        public Dictionary<int, InjectionStatus> GetInjectionStatuses()
+        {
+            return new Dictionary<int, InjectionStatus>(_injectionStatuses);
+        }
+
+        /// <summary>
+        /// Get count of injected processes
+        /// </summary>
+        public int GetInjectedCount()
+        {
+            return _injectionStatuses.Count(kv => kv.Value.IsInjected);
+        }
+
+        /// <summary>
+        /// Clear injection status (cleanup)
+        /// </summary>
+        public void ClearStatus(int processId)
+        {
+            _injectionStatuses.Remove(processId);
+        }
+
+        /// <summary>
+        /// Clear all statuses
+        /// </summary>
+        public void ClearAllStatuses()
+        {
+            _injectionStatuses.Clear();
+        }
+    }
+
+    /// <summary>
+    /// Injection status for a process
+    /// </summary>
+    public class InjectionStatus
+    {
+        public int ProcessId { get; set; }
+        public bool IsInjected { get; set; }
+        public DateTime InjectedAt { get; set; }
+        public string DllPath { get; set; } = "";
+        public string ErrorMessage { get; set; } = "";
     }
 }

@@ -1,0 +1,43 @@
+===========================================
+   DARK RED THEME - Gaming Style
+===========================================
+
+Copy this to LAUNCHER_DESIGN.txt to use this theme
+
+[Window]
+Title = JX1 Auto v2.0 - Dark Red Edition
+Width = 900
+Height = 600
+
+[Header]
+BackgroundColor = #1A0000
+Title = JX1 Auto v2.0
+Subtitle = Dark Red Gaming Edition
+TitleColor = #FF0000
+SubtitleColor = #CC0000
+
+[Colors]
+Background = #2B0000
+Foreground = #FFFFFF
+HeaderBackground = #1A0000
+HeaderForeground = #FF0000
+
+PrimaryAccent = #FF0000
+SecondaryAccent = #CC0000
+SuccessColor = #00FF00
+ErrorColor = #FF6666
+WarningColor = #FFAA00
+
+ButtonBackground = #CC0000
+ButtonForeground = #FFFFFF
+ButtonHover = #FF0000
+ButtonPressed = #990000
+ButtonDisabled = #666666
+
+TextPrimary = #FFFFFF
+TextSecondary = #CCCCCC
+TextHint = #999999
+
+[HomeTab.QuickActions]
+InjectButtonText = 🔥 INJECT BOT 🔥
+EjectButtonText = ⛔ EJECT BOT ⛔

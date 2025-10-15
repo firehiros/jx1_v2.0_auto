@@ -1,0 +1,43 @@
+===========================================
+   LIGHT BLUE THEME - Professional Style
+===========================================
+
+Copy this to LAUNCHER_DESIGN.txt to use this theme
+
+[Window]
+Title = JX1 Auto v2.0 - Professional Edition
+Width = 900
+Height = 600
+
+[Header]
+BackgroundColor = #E3F2FD
+Title = JX1 Auto v2.0
+Subtitle = Professional Edition
+TitleColor = #0D47A1
+SubtitleColor = #1976D2
+
+[Colors]
+Background = #FFFFFF
+Foreground = #212121
+HeaderBackground = #E3F2FD
+HeaderForeground = #0D47A1
+
+PrimaryAccent = #2196F3
+SecondaryAccent = #64B5F6
+SuccessColor = #4CAF50
+ErrorColor = #F44336
+WarningColor = #FF9800
+
+ButtonBackground = #2196F3
+ButtonForeground = #FFFFFF
+ButtonHover = #1976D2
+ButtonPressed = #0D47A1
+ButtonDisabled = #BDBDBD
+
+TextPrimary = #212121
+TextSecondary = #757575
+TextHint = #BDBDBD
+
+[HomeTab.QuickActions]
+InjectButtonText = ► Start Automation
+EjectButtonText = ■ Stop Automation
