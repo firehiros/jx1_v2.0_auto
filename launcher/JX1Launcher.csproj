@@ -21,11 +21,30 @@
 
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Models\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
-    <Folder Include="Services\" />
+    <Folder Include="Controls\" />
     <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Multi-Account Models -->
+    <Compile Update="Models\AccountProfile.cs" />
+    <Compile Update="Models\AccountStats.cs" />
+    <Compile Update="Models\BotSettings.cs" />
+
+    <!-- Multi-Account Services -->
+    <Compile Update="Services\AccountManager.cs" />
+    <Compile Update="Services\ProcessDetector.cs" />
+
+    <!-- Multi-Account UI Components -->
+    <Compile Update="Controls\AccountCard.xaml.cs">
+      <DependentUpon>AccountCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\AccountList.xaml.cs">
+      <DependentUpon>AccountList.xaml</DependentUpon>
+    </Compile>
+
+    <!-- ViewModels -->
+    <Compile Update="ViewModels\MainViewModel.cs" />
   </ItemGroup>
 
 </Project>

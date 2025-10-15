@@ -4,11 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:controls="clr-namespace:JX1Launcher.Controls"
         mc:Ignorable="d"
-        Title="JX1 Auto v2.0 - Launcher"
-        Height="600" Width="900"
+        Title="JX1 Auto v2.0 - Multi-Account Launcher"
+        Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True">
+
+    <Window.Resources>
+        <!-- Bool to Visibility Converter -->
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -21,14 +27,19 @@
         <Grid Grid.Row="0" Background="#1E1E1E" Height="60">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
                 <TextBlock Text="JX1 Auto v2.0" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text=" - Official Partnership Edition" FontSize="14" Foreground="#888" Margin="10,8,0,0"/>
+                <TextBlock Text=" - Multi-Account Edition" FontSize="14" Foreground="#888" Margin="10,8,0,0"/>
             </StackPanel>
         </Grid>
 
         <!-- Main Content -->
         <TabControl Grid.Row="1" Margin="10">
-            <!-- Home Tab -->
-            <TabItem Header="Home">
+            <!-- NEW: Accounts Tab (Multi-Account Management) -->
+            <TabItem Header="Accounts">
+                <controls:AccountList/>
+            </TabItem>
+
+            <!-- Home Tab (Legacy - for backward compatibility) -->
+            <TabItem Header="Legacy Mode">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

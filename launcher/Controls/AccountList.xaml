@@ -1,0 +1,188 @@
+<UserControl x:Class="JX1Launcher.Controls.AccountList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JX1Launcher.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- Header with global controls -->
+            <RowDefinition Height="*"/>      <!-- Active accounts -->
+            <RowDefinition Height="Auto"/>   <!-- Available accounts -->
+            <RowDefinition Height="Auto"/>   <!-- Footer with total stats -->
+        </Grid.RowDefinitions>
+
+        <!-- Header with Global Controls -->
+        <Grid Grid.Row="0" Background="#1E1E1E" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="20,0">
+                <Run Text="Accounts " FontSize="16" FontWeight="Bold" Foreground="White"/>
+                <Run Text="(" Foreground="#888"/>
+                <Run Text="{Binding ActiveAccountsCount, Mode=OneWay}" Foreground="#00FF00" FontWeight="Bold"/>
+                <Run Text=" active / " Foreground="#888"/>
+                <Run Text="{Binding TotalAccountsCount, Mode=OneWay}" Foreground="White"/>
+                <Run Text=" total)" Foreground="#888"/>
+            </TextBlock>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,20,0">
+                <Button Content="➕ Add Account" Width="120" Height="32" Margin="0,0,5,0"
+                        Command="{Binding AddAccountCommand}"
+                        ToolTip="Add new account profile"/>
+
+                <Button Content="🔄 Refresh" Width="90" Height="32" Margin="0,0,5,0"
+                        Command="{Binding RefreshCommand}"
+                        ToolTip="Refresh all accounts"/>
+
+                <Button Content="▶ Start All" Width="100" Height="32" Margin="0,0,5,0"
+                        Command="{Binding StartAllCommand}"
+                        ToolTip="Start all enabled accounts"
+                        IsEnabled="{Binding CanStartAll}"/>
+
+                <Button Content="⏹ Stop All" Width="100" Height="32"
+                        Command="{Binding StopAllCommand}"
+                        ToolTip="Stop all running accounts"
+                        IsEnabled="{Binding HasActiveAccounts}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Active Accounts Section (Scrollable) -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+            <StackPanel>
+                <!-- Active Accounts Header -->
+                <TextBlock Text="Active Accounts" FontSize="14" FontWeight="Bold"
+                           Foreground="#00FF00" Margin="10,5,10,10"
+                           Visibility="{Binding HasActiveAccounts, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                <!-- Active Accounts Grid (2 cards per row) -->
+                <ItemsControl ItemsSource="{Binding ActiveAccounts}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:AccountCard Account="{Binding}" Width="420" Margin="5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- No Active Accounts Message -->
+                <TextBlock Text="No active accounts. Click '▶ Start' on an account to begin."
+                           FontSize="14" Foreground="#888888" Margin="20,40"
+                           HorizontalAlignment="Center"
+                           Visibility="{Binding HasNoActiveAccounts, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Available Accounts Section (Inactive/Idle accounts) -->
+        <Border Grid.Row="2" BorderBrush="#444" BorderThickness="0,1,0,0" Padding="10"
+                Background="#0A0A0A"
+                Visibility="{Binding HasInactiveAccounts, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel>
+                <TextBlock Text="Available Accounts" FontSize="14" FontWeight="Bold"
+                           Foreground="#888888" Margin="10,5,10,10"/>
+
+                <!-- Inactive Accounts List -->
+                <ItemsControl ItemsSource="{Binding InactiveAccounts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#333" BorderThickness="0,0,0,1" Padding="10,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Icon/Number -->
+                                    <Ellipse Grid.Column="0" Width="24" Height="24" Fill="#555"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding Id}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Foreground="White" FontWeight="Bold"/>
+
+                                    <!-- Account Info -->
+                                    <StackPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock FontSize="14" Foreground="White">
+                                            <Run Text="Account " Foreground="#888"/>
+                                            <Run Text="{Binding Id}" FontWeight="Bold"/>
+                                            <Run Text=": " Foreground="#888"/>
+                                            <Run Text="{Binding Nickname}" FontWeight="Bold"/>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding CharacterName}" FontSize="11"
+                                                   Foreground="#888" Margin="0,2,0,0"
+                                                   Visibility="{Binding HasCharacterName, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </StackPanel>
+
+                                    <!-- Start Button -->
+                                    <Button Grid.Column="2" Content="▶ Start" Width="80" Height="28"
+                                            Margin="0,0,8,0"
+                                            Command="{Binding DataContext.StartAccountCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Id}"
+                                            ToolTip="Start this account"/>
+
+                                    <!-- Edit Button -->
+                                    <Button Grid.Column="3" Content="✎ Edit" Width="70" Height="28"
+                                            Command="{Binding DataContext.EditAccountCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Id}"
+                                            ToolTip="Edit account settings"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Add Account Button (if no accounts) -->
+                <Button Content="➕ Add Your First Account" Height="40" Margin="20"
+                        Command="{Binding AddAccountCommand}"
+                        Visibility="{Binding HasNoAccounts, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer - Total Statistics -->
+        <Border Grid.Row="3" Background="#1E1E1E" Height="40" BorderBrush="#444" BorderThickness="0,1,0,0">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="#888">
+                    <Run Text="Total Statistics" FontWeight="Bold"/>
+                </TextBlock>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock Text="Kills: " FontSize="12" Foreground="#888"/>
+                    <TextBlock Text="{Binding TotalKills}" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock Text="Items: " FontSize="12" Foreground="#888"/>
+                    <TextBlock Text="{Binding TotalItems}" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock Text="Gold: " FontSize="12" Foreground="#888"/>
+                    <TextBlock Text="{Binding TotalGold}" FontSize="12" FontWeight="Bold" Foreground="#FFD700"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Runtime: " FontSize="12" Foreground="#888"/>
+                    <TextBlock Text="{Binding TotalRuntime}" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

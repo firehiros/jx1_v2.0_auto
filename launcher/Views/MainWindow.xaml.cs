@@ -3,17 +3,20 @@ using System.Windows;
 using System.Windows.Threading;
 using JX1Launcher.Services;
 using JX1Launcher.Models;
+using JX1Launcher.ViewModels;
 
 namespace JX1Launcher.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Updated for multi-account support
     /// </summary>
     public partial class MainWindow : Window
     {
         private readonly InjectorService _injector;
         private readonly ProfileManager _profileManager;
         private readonly DispatcherTimer _updateTimer;
+        private readonly MainViewModel _viewModel;
 
         public MainWindow()
         {
@@ -22,7 +25,11 @@ namespace JX1Launcher.Views
             _injector = new InjectorService();
             _profileManager = new ProfileManager();
 
-            // Setup update timer
+            // Setup ViewModel for multi-account
+            _viewModel = new MainViewModel();
+            DataContext = _viewModel;
+
+            // Setup update timer (for legacy mode)
             _updateTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(500)
