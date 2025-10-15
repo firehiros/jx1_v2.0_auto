@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"=== PLAYER STATS ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"Current HP"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"Max HP"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3</ID>
+          <Description>"Current MP"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>4</ID>
+          <Description>"Max MP"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>100</ID>
+      <Description>"=== PLAYER POSITION ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>101</ID>
+          <Description>"Position X"</Description>
+          <VariableType>Float</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>102</ID>
+          <Description>"Position Y"</Description>
+          <VariableType>Float</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>103</ID>
+          <Description>"Position Z"</Description>
+          <VariableType>Float</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>104</ID>
+          <Description>"Direction (0-360)"</Description>
+          <VariableType>Float</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>200</ID>
+      <Description>"=== PLAYER INFO ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>201</ID>
+          <Description>"Level"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>202</ID>
+          <Description>"Experience"</Description>
+          <VariableType>8 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>203</ID>
+          <Description>"Gold"</Description>
+          <VariableType>8 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>204</ID>
+          <Description>"Character Name"</Description>
+          <VariableType>String</VariableType>
+          <Length>32</Length>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>300</ID>
+      <Description>"=== PLAYER STATE ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>301</ID>
+          <Description>"Is Dead (0=Alive, 1=Dead)"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>302</ID>
+          <Description>"In Combat"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>303</ID>
+          <Description>"Is Moving"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>400</ID>
+      <Description>"=== ENTITY MANAGER ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>401</ID>
+          <Description>"Entity Count"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>402</ID>
+          <Description>"Entity Array Pointer"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>403</ID>
+          <Description>"Max Entity Capacity"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>500</ID>
+      <Description>"=== FIRST ENTITY (EXAMPLE) ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>501</ID>
+          <Description>"Entity ID"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+          <Offsets>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>502</ID>
+          <Description>"Entity Type (1=Player,2=Monster,3=NPC,4=Item)"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+          <Offsets>
+            <Offset>4</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>503</ID>
+          <Description>"Entity HP"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+          <Offsets>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>504</ID>
+          <Description>"Entity Name"</Description>
+          <VariableType>String</VariableType>
+          <Length>64</Length>
+          <Address>00000000</Address>
+          <Offsets>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>600</ID>
+      <Description>"=== INVENTORY ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>601</ID>
+          <Description>"Item Count"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>602</ID>
+          <Description>"Max Inventory Slots"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>700</ID>
+      <Description>"=== SKILLS ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>701</ID>
+          <Description>"Skill Count"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>JX1.exe+0</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>800</ID>
+      <Description>"=== FUNCTION ADDRESSES ==="</Description>
+      <Options moHideChildren="1"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>801</ID>
+          <Description>"Attack Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>802</ID>
+          <Description>"MoveTo Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>803</ID>
+          <Description>"UseSkill Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>804</ID>
+          <Description>"UseItem Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>805</ID>
+          <Description>"PickupItem Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>806</ID>
+          <Description>"SendChat Function"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>00000000</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>JX1 V2.0 Auto - Cheat Engine Template
+
+This is a template to organize your Phase 2 reverse engineering findings.
+
+INSTRUCTIONS:
+1. Attach Cheat Engine to JX1.exe process
+2. Use memory scanning to find each value
+3. Update the addresses in this table
+4. For pointers, use "Find out what accesses this address" to discover the pointer chain
+5. Document all findings in docs/MEMORY_MAP.md
+6. Update core_dll/src/utils/Offsets.h with actual offsets
+7. Update core_dll/src/utils/Patterns.h with patterns
+8. Save this table frequently!
+
+TIPS:
+- Right-click on an address → "Find out what writes to this address" to discover functions
+- Right-click → "Pointer scan for this address" to find stable pointers
+- Use "Add address manually" to add pointer paths
+- Group related addresses together for organization
+- Test all addresses after game restart to verify stability
+
+Created: 2025-10-15
+Last Updated: [Update this date]
+  </Comments>
+</CheatTable>

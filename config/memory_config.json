@@ -1,0 +1,406 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "generated_by": "AutoScanMemory",
+    "generated_at": "",
+    "game_version": "",
+    "notes": "This file is auto-generated. Do not edit manually unless you know what you're doing."
+  },
+
+  "game_info": {
+    "process_name": "JX1.exe",
+    "module_name": "JX1.exe",
+    "architecture": "x86",
+    "is_64bit": false
+  },
+
+  "base_addresses": {
+    "player_base": {
+      "type": "static",
+      "address": "0x0",
+      "description": "Base pointer to player object",
+      "verified": false,
+      "found_at": "",
+      "method": ""
+    },
+    "entity_manager_base": {
+      "type": "static",
+      "address": "0x0",
+      "description": "Base pointer to entity manager",
+      "verified": false,
+      "found_at": "",
+      "method": ""
+    },
+    "inventory_base": {
+      "type": "static",
+      "address": "0x0",
+      "description": "Base pointer to inventory",
+      "verified": false,
+      "found_at": "",
+      "method": ""
+    }
+  },
+
+  "player_offsets": {
+    "health": {
+      "hp": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Current health points",
+        "verified": false,
+        "scan_value": 0
+      },
+      "max_hp": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Maximum health points",
+        "verified": false,
+        "scan_value": 0
+      },
+      "mp": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Current mana/internal power",
+        "verified": false,
+        "scan_value": 0
+      },
+      "max_mp": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Maximum mana/internal power",
+        "verified": false,
+        "scan_value": 0
+      }
+    },
+
+    "position": {
+      "x": {
+        "offset": "0x0",
+        "type": "float",
+        "size": 4,
+        "description": "X coordinate",
+        "verified": false,
+        "scan_value": 0.0
+      },
+      "y": {
+        "offset": "0x0",
+        "type": "float",
+        "size": 4,
+        "description": "Y coordinate",
+        "verified": false,
+        "scan_value": 0.0
+      },
+      "z": {
+        "offset": "0x0",
+        "type": "float",
+        "size": 4,
+        "description": "Z coordinate (height)",
+        "verified": false,
+        "scan_value": 0.0
+      },
+      "direction": {
+        "offset": "0x0",
+        "type": "float",
+        "size": 4,
+        "description": "Facing direction (radians)",
+        "verified": false,
+        "scan_value": 0.0
+      }
+    },
+
+    "character": {
+      "level": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Character level",
+        "verified": false,
+        "scan_value": 0
+      },
+      "experience": {
+        "offset": "0x0",
+        "type": "int64",
+        "size": 8,
+        "description": "Current experience points",
+        "verified": false,
+        "scan_value": 0
+      },
+      "gold": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Gold/money amount",
+        "verified": false,
+        "scan_value": 0
+      },
+      "name": {
+        "offset": "0x0",
+        "type": "string",
+        "size": 32,
+        "description": "Character name",
+        "verified": false,
+        "scan_value": ""
+      },
+      "id": {
+        "offset": "0x0",
+        "type": "int32",
+        "size": 4,
+        "description": "Character/player ID",
+        "verified": false,
+        "scan_value": 0
+      }
+    },
+
+    "state": {
+      "is_dead": {
+        "offset": "0x0",
+        "type": "bool",
+        "size": 1,
+        "description": "Is player dead",
+        "verified": false,
+        "scan_value": false
+      },
+      "in_combat": {
+        "offset": "0x0",
+        "type": "bool",
+        "size": 1,
+        "description": "Is player in combat",
+        "verified": false,
+        "scan_value": false
+      },
+      "is_moving": {
+        "offset": "0x0",
+        "type": "bool",
+        "size": 1,
+        "description": "Is player moving",
+        "verified": false,
+        "scan_value": false
+      }
+    }
+  },
+
+  "entity_offsets": {
+    "entity_id": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Unique entity ID",
+      "verified": false
+    },
+    "entity_type": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Entity type (1=Player, 2=Monster, 3=NPC, 4=Item)",
+      "verified": false
+    },
+    "hp": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Entity current HP",
+      "verified": false
+    },
+    "max_hp": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Entity max HP",
+      "verified": false
+    },
+    "pos_x": {
+      "offset": "0x0",
+      "type": "float",
+      "size": 4,
+      "description": "Entity X position",
+      "verified": false
+    },
+    "pos_y": {
+      "offset": "0x0",
+      "type": "float",
+      "size": 4,
+      "description": "Entity Y position",
+      "verified": false
+    },
+    "pos_z": {
+      "offset": "0x0",
+      "type": "float",
+      "size": 4,
+      "description": "Entity Z position",
+      "verified": false
+    },
+    "name": {
+      "offset": "0x0",
+      "type": "string",
+      "size": 64,
+      "description": "Entity name",
+      "verified": false
+    },
+    "is_dead": {
+      "offset": "0x0",
+      "type": "bool",
+      "size": 1,
+      "description": "Is entity dead",
+      "verified": false
+    },
+    "is_hostile": {
+      "offset": "0x0",
+      "type": "bool",
+      "size": 1,
+      "description": "Is entity hostile (for monsters)",
+      "verified": false
+    }
+  },
+
+  "inventory_offsets": {
+    "item_count": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Number of items in inventory",
+      "verified": false
+    },
+    "max_items": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Maximum inventory capacity",
+      "verified": false
+    },
+    "items_array": {
+      "offset": "0x0",
+      "type": "pointer",
+      "size": 4,
+      "description": "Pointer to items array",
+      "verified": false
+    }
+  },
+
+  "item_offsets": {
+    "item_id": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Item ID"
+    },
+    "item_type": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Item type/category"
+    },
+    "quantity": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Item stack quantity"
+    },
+    "quality": {
+      "offset": "0x0",
+      "type": "int32",
+      "size": 4,
+      "description": "Item quality (1=Grey, 2=White, 3=Blue, 4=Purple, 5=Gold)"
+    }
+  },
+
+  "patterns": {
+    "player_base": {
+      "pattern": "",
+      "mask": "",
+      "offset_to_address": 0,
+      "description": "Pattern to find player base pointer",
+      "assembly": "",
+      "verified": false
+    },
+    "entity_manager": {
+      "pattern": "",
+      "mask": "",
+      "offset_to_address": 0,
+      "description": "Pattern to find entity manager",
+      "assembly": "",
+      "verified": false
+    },
+    "attack_function": {
+      "pattern": "",
+      "mask": "",
+      "offset_to_address": 0,
+      "description": "Pattern to find attack function",
+      "assembly": "",
+      "verified": false
+    },
+    "moveto_function": {
+      "pattern": "",
+      "mask": "",
+      "offset_to_address": 0,
+      "description": "Pattern to find movement function",
+      "assembly": "",
+      "verified": false
+    },
+    "useskill_function": {
+      "pattern": "",
+      "mask": "",
+      "offset_to_address": 0,
+      "description": "Pattern to find skill usage function",
+      "assembly": "",
+      "verified": false
+    }
+  },
+
+  "function_addresses": {
+    "attack": {
+      "address": "0x0",
+      "signature": "",
+      "calling_convention": "thiscall",
+      "parameters": ["this", "Entity* target"],
+      "return_type": "void",
+      "verified": false
+    },
+    "use_skill": {
+      "address": "0x0",
+      "signature": "",
+      "calling_convention": "thiscall",
+      "parameters": ["this", "int skillID", "Entity* target"],
+      "return_type": "bool",
+      "verified": false
+    },
+    "move_to": {
+      "address": "0x0",
+      "signature": "",
+      "calling_convention": "thiscall",
+      "parameters": ["this", "float x", "float y", "float z"],
+      "return_type": "void",
+      "verified": false
+    },
+    "pickup_item": {
+      "address": "0x0",
+      "signature": "",
+      "calling_convention": "thiscall",
+      "parameters": ["this", "int itemID"],
+      "return_type": "bool",
+      "verified": false
+    },
+    "use_item": {
+      "address": "0x0",
+      "signature": "",
+      "calling_convention": "thiscall",
+      "parameters": ["this", "int slot"],
+      "return_type": "bool",
+      "verified": false
+    }
+  },
+
+  "scan_history": [
+    {
+      "timestamp": "",
+      "value_type": "hp",
+      "addresses_found": [],
+      "filters_applied": 0,
+      "final_address": "",
+      "verified": false
+    }
+  ]
+}
