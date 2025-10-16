@@ -149,7 +149,7 @@ void Menu::RenderBotTab()
     ImGui::Text("Bot Settings");
     ImGui::Separator();
 
-    ImGui::TextColored(ImVec2(255, 255, 0), "Coming in Phase 5-7!");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Coming in Phase 5-7!");
 
     ImGui::Spacing();
     ImGui::Text("Future features:");

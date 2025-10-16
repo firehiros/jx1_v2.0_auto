@@ -12,6 +12,8 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include <imgui.h>
+#include <string>
+#include <vector>
 
 namespace JX1 {
 

@@ -12,6 +12,14 @@
 #include <algorithm>
 #include <limits>
 
+// Undefine Windows min/max macros
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 namespace JX1 {
 
 EntityManager* EntityManager::Get()
