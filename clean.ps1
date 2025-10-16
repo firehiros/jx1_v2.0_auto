@@ -16,26 +16,33 @@ $dirsToClean = @(
     @{Path="bin"; Name="output bin"}
 )
 
-foreach ($item in $dirsToClean) {
-    if (Test-Path $item.Path) {
+foreach ($item in $dirsToClean)
+{
+    if (Test-Path $item.Path)
+    {
         Write-Host "Removing: $($item.Name) ($($item.Path))" -ForegroundColor Yellow
         Remove-Item -Recurse -Force $item.Path -ErrorAction SilentlyContinue
-        Write-Host "  ✓ Removed" -ForegroundColor Green
-    } else {
+        Write-Host "  [OK] Removed" -ForegroundColor Green
+    }
+    else
+    {
         Write-Host "Skipping: $($item.Name) (not found)" -ForegroundColor Gray
     }
 }
 
-if ($Deep) {
-    Write-Host "`nDeep clean - removing NuGet packages..." -ForegroundColor Yellow
-    if (Test-Path "launcher/obj") {
+if ($Deep)
+{
+    Write-Host ""
+    Write-Host "Deep clean - removing NuGet packages..." -ForegroundColor Yellow
+    if (Test-Path "launcher/obj")
+    {
         Remove-Item -Recurse -Force "launcher/obj" -ErrorAction SilentlyContinue
     }
-    Write-Host "  ✓ NuGet packages cleaned" -ForegroundColor Green
+    Write-Host "  [OK] NuGet packages cleaned" -ForegroundColor Green
 }
 
 Write-Host ""
-Write-Host "✓ Clean complete!" -ForegroundColor Green
+Write-Host "[OK] Clean complete!" -ForegroundColor Green
 Write-Host ""
 Write-Host "To rebuild:" -ForegroundColor Cyan
 Write-Host "  .\setup.ps1    # Full setup with dependency check"

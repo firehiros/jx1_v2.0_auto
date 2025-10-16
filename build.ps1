@@ -14,7 +14,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 function Write-Success { param($msg) Write-Host $msg -ForegroundColor Green }
-function Write-Error { param($msg) Write-Host $msg -ForegroundColor Red }
+function Write-ErrorMsg { param($msg) Write-Host $msg -ForegroundColor Red }
 function Write-Info { param($msg) Write-Host $msg -ForegroundColor Cyan }
 function Write-Step { param($msg) Write-Host "`n$msg" -ForegroundColor Yellow }
 
@@ -25,30 +25,36 @@ Write-Host "  Configuration: $Config"
 $buildDir = "core_dll/build_$Arch"
 
 # Clean if requested
-if ($Clean) {
+if ($Clean)
+{
     Write-Step "Cleaning build directory..."
-    if (Test-Path $buildDir) {
+    if (Test-Path $buildDir)
+    {
         Remove-Item -Recurse -Force $buildDir
-        Write-Success "✓ Cleaned"
+        Write-Success "[OK] Cleaned"
     }
-    if (Test-Path "launcher/bin") {
+    if (Test-Path "launcher/bin")
+    {
         Remove-Item -Recurse -Force "launcher/bin"
     }
-    if (Test-Path "launcher/obj") {
+    if (Test-Path "launcher/obj")
+    {
         Remove-Item -Recurse -Force "launcher/obj"
     }
 }
 
 # Configure if needed
-if (-not (Test-Path $buildDir)) {
+if (-not (Test-Path $buildDir))
+{
     Write-Step "Configuring core_dll..."
     New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
     Push-Location $buildDir
     cmake .. -A $Arch
     Pop-Location
 
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "Configuration failed!"
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-ErrorMsg "Configuration failed!"
         exit 1
     }
 }
@@ -57,19 +63,25 @@ if (-not (Test-Path $buildDir)) {
 Write-Step "[1/2] Building core_dll..."
 Push-Location $buildDir
 
-try {
+try
+{
     cmake --build . --config $Config --parallel
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         throw "Build failed!"
     }
 
-    Write-Success "✓ core_dll built"
-} catch {
-    Write-Error "core_dll build failed: $_"
+    Write-Success "[OK] core_dll built"
+}
+catch
+{
+    Write-ErrorMsg "core_dll build failed: $_"
     Pop-Location
     exit 1
-} finally {
+}
+finally
+{
     Pop-Location
 }
 
@@ -77,33 +89,43 @@ try {
 Write-Step "[2/2] Building launcher..."
 Push-Location launcher
 
-try {
+try
+{
     dotnet build -c $Config --no-restore
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         # Try with restore
         dotnet build -c $Config
-        if ($LASTEXITCODE -ne 0) {
+        if ($LASTEXITCODE -ne 0)
+        {
             throw "Build failed!"
         }
     }
 
-    Write-Success "✓ Launcher built"
-} catch {
-    Write-Error "Launcher build failed: $_"
+    Write-Success "[OK] Launcher built"
+}
+catch
+{
+    Write-ErrorMsg "Launcher build failed: $_"
     Pop-Location
     exit 1
-} finally {
+}
+finally
+{
     Pop-Location
 }
 
 # Verify
 Write-Host ""
-if ((Test-Path "bin/JX1AutoCore.dll") -and (Test-Path "launcher/bin/$Config/net7.0-windows/JX1Launcher.exe")) {
-    Write-Success "✓ Build complete!"
+if ((Test-Path "bin/JX1AutoCore.dll") -and (Test-Path "launcher/bin/$Config/net7.0-windows/JX1Launcher.exe"))
+{
+    Write-Success "[OK] Build complete!"
     Write-Host ""
     Write-Info "Run with: .\run.ps1"
-} else {
-    Write-Error "✗ Build may have failed - some files missing"
+}
+else
+{
+    Write-ErrorMsg "[X] Build may have failed - some files missing"
     exit 1
 }

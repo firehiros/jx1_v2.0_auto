@@ -8,7 +8,8 @@ param(
 
 $launcherPath = "launcher/bin/$Config/net7.0-windows/JX1Launcher.exe"
 
-if (-not (Test-Path $launcherPath)) {
+if (-not (Test-Path $launcherPath))
+{
     Write-Host "Launcher not found at: $launcherPath" -ForegroundColor Red
     Write-Host ""
     Write-Host "Please build first:" -ForegroundColor Yellow
@@ -27,7 +28,7 @@ Write-Host ""
 # Start the launcher
 Start-Process -FilePath $launcherPath -WorkingDirectory (Split-Path $launcherPath)
 
-Write-Host "✓ Launcher started" -ForegroundColor Green
+Write-Host "[OK] Launcher started" -ForegroundColor Green
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
 Write-Host "  1. Start JX1 game" -ForegroundColor White
