@@ -20,9 +20,9 @@ HMODULE g_hModule = nullptr;
 /**
  * Allocate a console for debugging output
  */
-void AllocateConsole()
+void AllocateDebugConsole()
 {
-    AllocConsole();
+    ::AllocConsole();
     FILE* fDummy;
     freopen_s(&fDummy, "CONOUT$", "w", stdout);
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
@@ -39,12 +39,12 @@ void AllocateConsole()
 /**
  * Free the console
  */
-void FreeConsole()
+void FreeDebugConsole()
 {
     fclose(stdout);
     fclose(stderr);
     fclose(stdin);
-    FreeConsole();
+    ::FreeConsole();
 }
 
 /**
@@ -139,7 +139,7 @@ DWORD WINAPI MainThread(LPVOID lpParameter)
 
 #ifdef _DEBUG
     // Allocate console for debug output
-    AllocateConsole();
+    AllocateDebugConsole();
 #endif
 
     Logger::Info("DLL injected successfully!");
@@ -155,7 +155,7 @@ DWORD WINAPI MainThread(LPVOID lpParameter)
         Shutdown();
 
 #ifdef _DEBUG
-        FreeConsole();
+        FreeDebugConsole();
 #endif
 
         // Unload DLL
@@ -189,7 +189,7 @@ DWORD WINAPI MainThread(LPVOID lpParameter)
 #ifdef _DEBUG
     Logger::Info("Press any key to close console...");
     std::cin.get();
-    FreeConsole();
+    FreeDebugConsole();
 #endif
 
     // Unload DLL

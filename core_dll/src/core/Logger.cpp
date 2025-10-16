@@ -9,6 +9,14 @@
 #include <iostream>
 #include <filesystem>
 
+// Undefine Windows macros that conflict with our enums
+#ifdef ERROR
+#undef ERROR
+#endif
+#ifdef SUCCESS
+#undef SUCCESS
+#endif
+
 // Static member initialization
 std::mutex Logger::s_mutex;
 std::ofstream Logger::s_logFile;

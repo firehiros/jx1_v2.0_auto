@@ -5,7 +5,8 @@
       "Bash(cat:*)",
       "Bash(tree:*)",
       "Read(//Users/ts-quocchien.kieu/Documents/git/vltk_mcp/**)",
-      "Bash(claude mcp:*)"
+      "Bash(claude mcp:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []
