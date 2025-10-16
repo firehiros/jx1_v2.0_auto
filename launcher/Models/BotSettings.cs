@@ -197,6 +197,18 @@ namespace JX1Launcher.Models
         }
 
         // ========================================
+        // Runtime Stats (Updated by IPC)
+        // ========================================
+
+        public int CurrentHP { get; set; } = 0;
+        public int MaxHP { get; set; } = 100;
+        public int CurrentMP { get; set; } = 0;
+        public int MaxMP { get; set; } = 100;
+        public int KillCount { get; set; } = 0;
+        public int DeathCount { get; set; } = 0;
+        public int ItemCount { get; set; } = 0;
+
+        // ========================================
         // Computed Properties
         // ========================================
 

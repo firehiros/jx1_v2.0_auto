@@ -157,7 +157,7 @@ namespace JX1Launcher.Services
                     };
 
                     // Parse bot mode
-                    if (Enum.TryParse<BotMode>(data.BotMode?.ToString(), out var botMode))
+                    if (Enum.TryParse<BotMode>(data.BotMode?.ToString(), out BotMode botMode))
                     {
                         account.BotMode = botMode;
                     }
