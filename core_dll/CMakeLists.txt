@@ -161,7 +161,6 @@ target_link_libraries(JX1AutoCore
 
     # DirectX 9
     d3d9.lib
-    d3dx9.lib
 
     # Windows API
     user32.lib
