@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "vltk-mcp": {
+      "command": "/Users/ts-quocchien.kieu/Documents/git/vltk_mcp/.venv/bin/python3.13",
+      "args": ["-m", "app.mcp.main"],
+      "cwd": "/Users/ts-quocchien.kieu/Documents/git/vltk_mcp",
+      "env": {
+        "OPENAI_API_KEY": "raik-pat-c4cf07f33r10aia4a18c97feceb75f7aa6cc4342afcd44a4a18c97feceb75f7a",
+        "OPENAI_BASE_URL": "https://api.ai.public.rakuten-it.com/openai/v1/",
+        "OPENAI_API_MODEL": "gpt-4o",
+        "REPOSITORY_URL": "https://github.com/jxoffline/jx1linux.git",
+        "REPOSITORY_BRANCH": "main",
+        "LLM_PROVIDER": "none"
+      }
+    }
+  }
+}

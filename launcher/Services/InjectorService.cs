@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -114,9 +115,9 @@ namespace JX1Launcher.Services
         }
 
         /// <summary>
-        /// Inject DLL into game process
+        /// Inject DLL into game process with memory config validation
         /// </summary>
-        public bool InjectDll()
+        public bool InjectDll(bool skipValidation = false)
         {
             if (!IsGameRunning())
             {
@@ -128,11 +129,24 @@ namespace JX1Launcher.Services
                 throw new Exception("DLL is already injected!");
             }
 
-            // Find DLL path
-            string dllPath = FindDllPath();
-            if (!File.Exists(dllPath))
+            // Validate memory config before injection
+            if (!skipValidation)
             {
-                throw new Exception($"DLL not found: {dllPath}");
+                var validator = new MemoryConfigValidator();
+                var validationResult = validator.ValidateConfig();
+
+                if (!validationResult.IsValid)
+                {
+                    // Show error window and ask user what to do
+                    throw new MemoryConfigException("Memory configuration validation failed", validationResult);
+                }
+            }
+
+            // Find DLL path
+            string? dllPath = FindDllPath();
+            if (dllPath == null)
+            {
+                throw new FileNotFoundException($"Could not find {DLL_NAME}. Please build the core_dll project first.");
             }
 
             return InjectDllIntoProcess(_gameProcess!.Id, dllPath);
@@ -159,7 +173,10 @@ namespace JX1Launcher.Services
         // Private Methods
         // ========================================
 
-        private string FindDllPath()
+        /// <summary>
+        /// Try to find DLL path. Returns null if not found.
+        /// </summary>
+        private string? FindDllPath()
         {
             // Look for DLL in multiple locations
             string[] searchPaths = new[]
@@ -180,7 +197,32 @@ namespace JX1Launcher.Services
                 }
             }
 
-            throw new FileNotFoundException($"Could not find {DLL_NAME}");
+            return null;
+        }
+
+        /// <summary>
+        /// Check if DLL file is available
+        /// </summary>
+        public bool IsDllAvailable()
+        {
+            return FindDllPath() != null;
+        }
+
+        /// <summary>
+        /// Get all search paths for DLL (for debugging)
+        /// </summary>
+        public string[] GetDllSearchPaths()
+        {
+            string[] searchPaths = new[]
+            {
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "core_dll", "build", "Debug", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "core_dll", "build", "Release", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "core_dll", "build", "Debug", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "core_dll", "build", "Release", DLL_NAME)
+            };
+
+            return searchPaths.Select(p => Path.GetFullPath(p)).ToArray();
         }
 
         private bool InjectDllIntoProcess(int processId, string dllPath)
@@ -252,9 +294,9 @@ namespace JX1Launcher.Services
         // ========================================
 
         /// <summary>
-        /// Inject DLL to specific process (for multi-account)
+        /// Inject DLL to specific process (for multi-account) with validation
         /// </summary>
-        public async Task<bool> InjectToProcess(int processId, string dllPath)
+        public async Task<bool> InjectToProcess(int processId, string dllPath, bool skipValidation = false)
         {
             try
             {
@@ -263,6 +305,18 @@ namespace JX1Launcher.Services
                     _injectionStatuses[processId].IsInjected)
                 {
                     return true;  // Already injected
+                }
+
+                // Validate memory config before injection (only once)
+                if (!skipValidation && _injectionStatuses.Count == 0)
+                {
+                    var validator = new MemoryConfigValidator();
+                    var validationResult = validator.ValidateConfig();
+
+                    if (!validationResult.IsValid)
+                    {
+                        throw new MemoryConfigException("Memory configuration validation failed", validationResult);
+                    }
                 }
 
                 // Verify DLL exists
@@ -384,5 +438,19 @@ namespace JX1Launcher.Services
         public DateTime InjectedAt { get; set; }
         public string DllPath { get; set; } = "";
         public string ErrorMessage { get; set; } = "";
+    }
+
+    /// <summary>
+    /// Custom exception for memory config validation failures
+    /// </summary>
+    public class MemoryConfigException : Exception
+    {
+        public MemoryConfigValidator.ValidationResult ValidationResult { get; }
+
+        public MemoryConfigException(string message, MemoryConfigValidator.ValidationResult validationResult)
+            : base(message)
+        {
+            ValidationResult = validationResult;
+        }
     }
 }

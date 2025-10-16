@@ -3,9 +3,21 @@
     "allow": [
       "Bash(test:*)",
       "Bash(cat:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Read(//Users/ts-quocchien.kieu/Documents/git/vltk_mcp/**)",
+      "Bash(claude mcp:*)"
     ],
     "deny": [],
     "ask": []
+  },
+  "mcpServers": {
+    "jx1-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/ts-quocchien.kieu/Documents/git/jx1_v2.0_auto"
+      ]
+    }
   }
 }

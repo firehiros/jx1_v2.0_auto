@@ -17,6 +17,7 @@ namespace JX1Launcher.Views
         private readonly ProfileManager _profileManager;
         private readonly DispatcherTimer _updateTimer;
         private readonly MainViewModel _viewModel;
+        private bool _dllAvailable;
 
         public MainWindow()
         {
@@ -28,6 +29,9 @@ namespace JX1Launcher.Views
             // Setup ViewModel for multi-account
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
+
+            // Check DLL availability on startup
+            CheckDllAvailability();
 
             // Setup update timer (for legacy mode)
             _updateTimer = new DispatcherTimer
@@ -41,6 +45,53 @@ namespace JX1Launcher.Views
             LoadProfiles();
 
             UpdateStatus();
+        }
+
+        private void CheckDllAvailability()
+        {
+            _dllAvailable = _injector.IsDllAvailable();
+
+            if (!_dllAvailable)
+            {
+                // Show warning message in status bar
+                StatusBarText.Text = "⚠️ WARNING: JX1AutoCore.dll not found! Please build core_dll project first.";
+
+                // Log search paths for debugging
+                var searchPaths = _injector.GetDllSearchPaths();
+                System.Diagnostics.Debug.WriteLine("=== DLL NOT FOUND ===");
+                System.Diagnostics.Debug.WriteLine("Searched in following locations:");
+                foreach (var path in searchPaths)
+                {
+                    System.Diagnostics.Debug.WriteLine($"  - {path}");
+                }
+                System.Diagnostics.Debug.WriteLine("====================");
+
+                // Show info to user (non-blocking)
+                var logMessage = "JX1AutoCore.dll not found!\n\n" +
+                                "Searched locations:\n" +
+                                string.Join("\n", searchPaths.Select(p => $"  • {p}")) +
+                                "\n\nPlease build the core_dll project:\n" +
+                                "  1. Open core_dll folder\n" +
+                                "  2. Run: mkdir build && cd build\n" +
+                                "  3. Run: cmake .. -A Win32\n" +
+                                "  4. Run: cmake --build . --config Debug\n\n" +
+                                "You can still use Launcher settings and profiles.";
+
+                // Use Dispatcher to show message after window is loaded
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    MessageBox.Show(
+                        logMessage,
+                        "Core DLL Not Found",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+            }
+            else
+            {
+                StatusBarText.Text = "Core DLL found - Ready to use";
+            }
         }
 
         private void UpdateTimer_Tick(object? sender, EventArgs e)
@@ -58,18 +109,28 @@ namespace JX1Launcher.Views
                 ? "Game Process: Found (JX1.exe)"
                 : "Game Process: Not found";
 
-            DllStatusText.Text = dllInjected
-                ? "DLL Status: Injected ✓"
-                : "DLL Status: Not injected";
+            if (!_dllAvailable)
+            {
+                DllStatusText.Text = "DLL Status: ⚠️ Core DLL not found";
+                StatusText.Text = "Cannot inject - DLL not available";
+                InjectButton.IsEnabled = false;
+                EjectButton.IsEnabled = false;
+            }
+            else
+            {
+                DllStatusText.Text = dllInjected
+                    ? "DLL Status: Injected ✓"
+                    : "DLL Status: Not injected";
 
-            StatusText.Text = dllInjected
-                ? "DLL Active - Bot running"
-                : gameRunning
-                    ? "Ready to inject"
-                    : "Waiting for game...";
+                StatusText.Text = dllInjected
+                    ? "DLL Active - Bot running"
+                    : gameRunning
+                        ? "Ready to inject"
+                        : "Waiting for game...";
 
-            InjectButton.IsEnabled = gameRunning && !dllInjected;
-            EjectButton.IsEnabled = dllInjected;
+                InjectButton.IsEnabled = gameRunning && !dllInjected;
+                EjectButton.IsEnabled = dllInjected;
+            }
 
             // TODO: Get statistics from DLL via named pipe
             // TxtKills.Text = stats.Kills.ToString();
@@ -78,10 +139,27 @@ namespace JX1Launcher.Views
 
         private void InjectButton_Click(object sender, RoutedEventArgs e)
         {
+            // Double-check DLL availability
+            if (!_dllAvailable)
+            {
+                var searchPaths = _injector.GetDllSearchPaths();
+                MessageBox.Show(
+                    "Cannot inject: JX1AutoCore.dll not found!\n\n" +
+                    "Searched locations:\n" +
+                    string.Join("\n", searchPaths.Select(p => $"  • {p}")) +
+                    "\n\nPlease build the core_dll project first.",
+                    "DLL Not Found",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+
             try
             {
-                StatusBarText.Text = "Injecting DLL...";
+                StatusBarText.Text = "Validating memory configuration...";
 
+                // Try to inject (with validation)
                 if (_injector.InjectDll())
                 {
                     MessageBox.Show(
@@ -103,6 +181,69 @@ namespace JX1Launcher.Views
                     );
 
                     StatusBarText.Text = "Injection failed";
+                }
+            }
+            catch (FileNotFoundException fnfEx)
+            {
+                StatusBarText.Text = "DLL file not found";
+
+                var searchPaths = _injector.GetDllSearchPaths();
+                MessageBox.Show(
+                    $"{fnfEx.Message}\n\n" +
+                    "Searched locations:\n" +
+                    string.Join("\n", searchPaths.Select(p => $"  • {p}")) +
+                    "\n\nPlease build the core_dll project.",
+                    "DLL Not Found",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                // Re-check DLL availability
+                _dllAvailable = _injector.IsDllAvailable();
+            }
+            catch (MemoryConfigException memEx)
+            {
+                // Show validation error window
+                StatusBarText.Text = "Memory configuration validation failed";
+
+                var errorWindow = new ConfigErrorWindow(memEx.ValidationResult);
+                bool? result = errorWindow.ShowDialog();
+
+                if (result == true && errorWindow.ContinueAnyway)
+                {
+                    // User chose to continue anyway
+                    try
+                    {
+                        StatusBarText.Text = "Injecting DLL (validation skipped)...";
+
+                        if (_injector.InjectDll(skipValidation: true))
+                        {
+                            MessageBox.Show(
+                                "⚠️ DLL injected (with invalid config)!\n\n" +
+                                "WARNING: The bot may not work correctly.\n" +
+                                "Press INSERT in game to open menu.",
+                                "Success (with warnings)",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning
+                            );
+
+                            StatusBarText.Text = "DLL injected (validation skipped)";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            $"Injection failed: {ex.Message}",
+                            "Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        StatusBarText.Text = "Injection failed";
+                    }
+                }
+                else
+                {
+                    StatusBarText.Text = "Injection cancelled - please fix memory config";
                 }
             }
             catch (Exception ex)
