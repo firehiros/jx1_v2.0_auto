@@ -236,6 +236,17 @@ namespace JX1Launcher.Services
             // Look for DLL in multiple locations
             string[] searchPaths = new[]
             {
+                // First check the bin directory (default output location)
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "bin", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "bin", DLL_NAME),
+
+                // Then check build directories
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "core_dll", "build_x64", "bin", "Release", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "core_dll", "build_x64", "bin", "Debug", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "core_dll", "build_Win32", "bin", "Release", DLL_NAME),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "core_dll", "build_Win32", "bin", "Debug", DLL_NAME),
+
+                // Legacy paths
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "core_dll", "build", "Debug", DLL_NAME),
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "core_dll", "build", "Release", DLL_NAME),
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DLL_NAME),
