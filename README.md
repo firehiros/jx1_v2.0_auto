@@ -30,7 +30,47 @@
 
 ## 🎮 Quick Start (After Phase 2)
 
-### Build & Run
+### ⚡ One-Click Setup (Recommended - No Visual Studio Required!)
+
+```powershell
+# Run this single command to setup, build, and run everything!
+.\quickstart.ps1
+```
+
+This will:
+1. ✅ Check all dependencies
+2. ✅ Configure and build core_dll (x64 or x86)
+3. ✅ Build launcher
+4. ✅ Run the launcher
+
+### 🛠️ Individual Scripts (Command Line Only)
+
+```powershell
+# Check if all dependencies are installed
+.\check_dependencies.ps1
+
+# Full setup (first time)
+.\setup.ps1                    # x64, Release (default)
+.\setup.ps1 -Arch Win32        # x86, Release
+.\setup.ps1 -Arch x64 -Config Debug  # x64, Debug
+
+# Quick rebuild (after changes)
+.\build.ps1                    # x64, Release (default)
+.\build.ps1 -Clean             # Clean rebuild
+.\build.ps1 -Arch Win32        # x86 build
+
+# Run launcher
+.\run.ps1                      # Release (default)
+.\run.ps1 -Config Debug        # Debug build
+
+# Clean build artifacts
+.\clean.ps1                    # Clean all build files
+.\clean.ps1 -Deep              # Deep clean (includes packages)
+```
+
+**Note**: All scripts work from command line without opening Visual Studio!
+
+### 📘 Manual Build (Traditional Method)
 
 ```bash
 # 1. Build Core DLL (x64 - for modern games)
@@ -50,7 +90,7 @@ cd bin/Release/net7.0-windows
 JX1Launcher.exe
 ```
 
-**Note**: Default build is x64. If your game runs on x86, use `-A Win32` instead.
+**Default**: x64 architecture. Use `-A Win32` for legacy x86 games.
 
 ### Use
 
