@@ -23,10 +23,22 @@ if (Get-Command cmake -ErrorAction SilentlyContinue) {
 Write-Host "`nChecking .NET SDK..." -ForegroundColor Yellow
 if (Get-Command dotnet -ErrorAction SilentlyContinue) {
     $dotnetVersion = dotnet --version
-    if ($dotnetVersion -like "7.*") {
-        Write-Host "  [OK] .NET SDK found: $dotnetVersion" -ForegroundColor Green
-    } else {
-        Write-Host "  [WARN] .NET SDK found but version is $dotnetVersion (need 7.0.x)" -ForegroundColor Yellow
+    Write-Host "  Default .NET SDK: $dotnetVersion" -ForegroundColor Cyan
+
+    # Check all installed SDKs
+    $allSdks = dotnet --list-sdks
+    $hasDotnet7 = $false
+
+    foreach ($sdk in $allSdks) {
+        if ($sdk -like "7.*") {
+            $hasDotnet7 = $true
+            Write-Host "  [OK] .NET 7 SDK found: $sdk" -ForegroundColor Green
+            break
+        }
+    }
+
+    if (-not $hasDotnet7) {
+        Write-Host "  [FAIL] .NET 7 SDK not found!" -ForegroundColor Red
         Write-Host "    Download .NET 7 from: https://dotnet.microsoft.com/download/dotnet/7.0" -ForegroundColor Yellow
         $allGood = $false
     }
