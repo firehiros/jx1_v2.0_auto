@@ -12,6 +12,9 @@
     <Company>JX1 Auto</Company>
     <Product>JX1 Auto Launcher</Product>
     <Description>Launcher for JX1 Auto - Official Partnership Edition</Description>
+    <!-- Platform targeting: Prefer x64, support AnyCPU for compatibility -->
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>

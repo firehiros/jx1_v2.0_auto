@@ -5,8 +5,13 @@ project(JX1AutoCore VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Force 32-bit build
-set(CMAKE_GENERATOR_PLATFORM Win32)
+# Platform Architecture (x64 by default, can override with -A Win32 for x86)
+# Default to x64 since modern games run on x64
+if(NOT CMAKE_GENERATOR_PLATFORM)
+    set(CMAKE_GENERATOR_PLATFORM x64)
+endif()
+
+message(STATUS "Target Architecture: ${CMAKE_GENERATOR_PLATFORM}")
 
 # Output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -29,10 +34,22 @@ include_directories(
     ${DXSDK_DIR}/Include
 )
 
-# Link directories
+# Link directories (dynamic based on platform)
+if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+    set(MINHOOK_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/minhook/bin")
+    set(DXSDK_LIB_DIR "${DXSDK_DIR}/Lib/x64")
+    set(MINHOOK_LIB_NAME "MinHook.x64.lib")
+    set(MINHOOK_DLL_NAME "MinHook.x64.dll")
+else()
+    set(MINHOOK_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/minhook/bin")
+    set(DXSDK_LIB_DIR "${DXSDK_DIR}/Lib/x86")
+    set(MINHOOK_LIB_NAME "MinHook.x86.lib")
+    set(MINHOOK_DLL_NAME "MinHook.x86.dll")
+endif()
+
 link_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/minhook/lib
-    ${DXSDK_DIR}/Lib/x86
+    ${MINHOOK_LIB_DIR}
+    ${DXSDK_LIB_DIR}
 )
 
 # Source files
@@ -137,10 +154,10 @@ add_library(JX1AutoCore SHARED
     ${IMGUI_SOURCES}
 )
 
-# Link libraries
+# Link libraries (dynamic based on platform)
 target_link_libraries(JX1AutoCore
-    # MinHook
-    libMinHook.x86.lib
+    # MinHook (platform-specific)
+    ${MINHOOK_LIB_NAME}
 
     # DirectX 9
     d3d9.lib
@@ -177,17 +194,30 @@ if(MSVC)
     )
 endif()
 
-# Preprocessor definitions
-target_compile_definitions(JX1AutoCore PRIVATE
-    WIN32
-    _WINDOWS
-    _USRDLL
-    JX1AUTOCORE_EXPORTS
-    UNICODE
-    _UNICODE
-    $<$<CONFIG:Debug>:_DEBUG>
-    $<$<CONFIG:Release>:NDEBUG>
-)
+# Preprocessor definitions (platform-specific)
+if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+    target_compile_definitions(JX1AutoCore PRIVATE
+        WIN64
+        _WINDOWS
+        _USRDLL
+        JX1AUTOCORE_EXPORTS
+        UNICODE
+        _UNICODE
+        $<$<CONFIG:Debug>:_DEBUG>
+        $<$<CONFIG:Release>:NDEBUG>
+    )
+else()
+    target_compile_definitions(JX1AutoCore PRIVATE
+        WIN32
+        _WINDOWS
+        _USRDLL
+        JX1AUTOCORE_EXPORTS
+        UNICODE
+        _UNICODE
+        $<$<CONFIG:Debug>:_DEBUG>
+        $<$<CONFIG:Release>:NDEBUG>
+    )
+endif()
 
 # Copy DLL to bin folder after build
 add_custom_command(TARGET JX1AutoCore POST_BUILD
@@ -197,12 +227,12 @@ add_custom_command(TARGET JX1AutoCore POST_BUILD
     COMMENT "Copying DLL to bin folder..."
 )
 
-# Copy MinHook DLL
+# Copy MinHook DLL (platform-specific)
 add_custom_command(TARGET JX1AutoCore POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/minhook/lib/libMinHook.x86.dll
-        ${CMAKE_SOURCE_DIR}/../bin/libMinHook.x86.dll
-    COMMENT "Copying MinHook DLL to bin folder..."
+        ${MINHOOK_LIB_DIR}/${MINHOOK_DLL_NAME}
+        ${CMAKE_SOURCE_DIR}/../bin/${MINHOOK_DLL_NAME}
+    COMMENT "Copying MinHook DLL (${MINHOOK_DLL_NAME}) to bin folder..."
 )
 
 # Source groups for IDE

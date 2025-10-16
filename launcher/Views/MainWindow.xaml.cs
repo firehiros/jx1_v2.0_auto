@@ -105,9 +105,15 @@ namespace JX1Launcher.Views
             bool gameRunning = _injector.IsGameRunning();
             bool dllInjected = _injector.IsDllInjected();
 
-            GameProcessText.Text = gameRunning
-                ? "Game Process: Found (JX1.exe)"
-                : "Game Process: Not found";
+            if (gameRunning)
+            {
+                string arch = _injector.GetGameArchitecture();
+                GameProcessText.Text = $"Game Process: Found (JX1.exe - {arch})";
+            }
+            else
+            {
+                GameProcessText.Text = "Game Process: Not found";
+            }
 
             if (!_dllAvailable)
             {

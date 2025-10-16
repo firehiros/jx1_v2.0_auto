@@ -33,12 +33,15 @@
 ### Build & Run
 
 ```bash
-# 1. Build Core DLL
-cd core_dll/build
-cmake .. -A Win32
+# 1. Build Core DLL (x64 - for modern games)
+cd core_dll
+mkdir build
+cd build
+cmake .. -A x64          # For x64 games (recommended)
+# OR: cmake .. -A Win32  # For x86 games (legacy)
 cmake --build . --config Release
 
-# 2. Build Launcher
+# 2. Build Launcher (x64)
 cd launcher
 dotnet build -c Release
 
@@ -46,6 +49,8 @@ dotnet build -c Release
 cd bin/Release/net7.0-windows
 JX1Launcher.exe
 ```
+
+**Note**: Default build is x64. If your game runs on x86, use `-A Win32` instead.
 
 ### Use
 

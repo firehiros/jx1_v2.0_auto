@@ -17,6 +17,7 @@ namespace JX1Launcher.Services
         private const string DLL_NAME = "JX1AutoCore.dll";
 
         private Process? _gameProcess;
+        private bool _isGameProcess64Bit = false;
 
         // Multi-account support: Track injection status per process
         private readonly Dictionary<int, InjectionStatus> _injectionStatuses;
@@ -49,6 +50,9 @@ namespace JX1Launcher.Services
         [DllImport("kernel32.dll")]
         private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool IsWow64Process(IntPtr hProcess, out bool wow64Process);
+
         // Constants
         private const uint PROCESS_ALL_ACCESS = 0x1F0FFF;
         private const uint MEM_COMMIT = 0x1000;
@@ -68,7 +72,7 @@ namespace JX1Launcher.Services
         // ========================================
 
         /// <summary>
-        /// Check if game is running
+        /// Check if game is running and detect its architecture
         /// </summary>
         public bool IsGameRunning()
         {
@@ -78,6 +82,7 @@ namespace JX1Launcher.Services
                 if (processes.Length > 0)
                 {
                     _gameProcess = processes[0];
+                    _isGameProcess64Bit = IsProcess64Bit(_gameProcess);
                     return true;
                 }
 
@@ -88,6 +93,54 @@ namespace JX1Launcher.Services
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Check if a process is 64-bit
+        /// </summary>
+        private bool IsProcess64Bit(Process process)
+        {
+            // On 64-bit OS
+            if (Environment.Is64BitOperatingSystem)
+            {
+                try
+                {
+                    IntPtr processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
+                    if (processHandle == IntPtr.Zero)
+                    {
+                        // Try with limited access
+                        processHandle = Process.GetProcessById(process.Id).Handle;
+                    }
+
+                    bool isWow64;
+                    if (IsWow64Process(processHandle, out isWow64))
+                    {
+                        // If process is WOW64, it's 32-bit running on 64-bit OS
+                        return !isWow64;
+                    }
+
+                    CloseHandle(processHandle);
+                }
+                catch
+                {
+                    // If we can't determine, assume 64-bit on 64-bit OS
+                    return true;
+                }
+            }
+
+            // On 32-bit OS, all processes are 32-bit
+            return false;
+        }
+
+        /// <summary>
+        /// Get game process architecture
+        /// </summary>
+        public string GetGameArchitecture()
+        {
+            if (_gameProcess == null)
+                return "Unknown";
+
+            return _isGameProcess64Bit ? "x64" : "x86";
         }
 
         /// <summary>
