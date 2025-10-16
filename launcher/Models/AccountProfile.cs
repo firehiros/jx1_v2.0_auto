@@ -41,6 +41,22 @@ namespace JX1Launcher.Models
         // Password (encrypted in config file)
         public string PasswordHash { get; set; } = "";
 
+        // Server Information for auto-login
+        public string ServerCluster { get; set; } = "";
+        public string ServerName { get; set; } = "";
+
+        // Auto-login settings
+        public bool AutoLogin { get; set; } = false;
+        public bool AutoReconnect { get; set; } = true;
+        public int MaxReconnectAttempts { get; set; } = 3;
+
+        private int _reconnectAttempts = 0;
+        public int ReconnectAttempts
+        {
+            get => _reconnectAttempts;
+            set { _reconnectAttempts = value; OnPropertyChanged(); }
+        }
+
         // ========================================
         // Game Info (auto-detected or configured)
         // ========================================
@@ -195,6 +211,8 @@ namespace JX1Launcher.Models
         public string DisplayName => $"Account {Id}: {Nickname}";
 
         public string LevelAndMap => $"Lv {Level}  │  {CurrentMap}";
+
+        public bool HasCharacterName => !string.IsNullOrEmpty(CharacterName);
 
         // ========================================
         // Methods

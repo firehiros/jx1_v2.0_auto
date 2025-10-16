@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using JX1Launcher.Models;
+using Timer = System.Timers.Timer;
 
 namespace JX1Launcher.Services
 {
@@ -18,7 +20,9 @@ namespace JX1Launcher.Services
         private readonly ProcessDetector _processDetector;
         private readonly InjectorService _injectorService;
         private readonly ConfigService _configService;
+        private readonly AutoLoginService _autoLoginService;
         private readonly Timer _monitoringTimer;
+        private readonly Dictionary<int, CancellationTokenSource> _connectionMonitors;
 
         // Observable collection for UI binding
         public ObservableCollection<AccountProfile> Accounts { get; }
@@ -41,6 +45,8 @@ namespace JX1Launcher.Services
             _processDetector = new ProcessDetector();
             _injectorService = new InjectorService();
             _configService = new ConfigService();
+            _autoLoginService = new AutoLoginService();
+            _connectionMonitors = new Dictionary<int, CancellationTokenSource>();
 
             // Monitoring timer (update stats every 1 second)
             _monitoringTimer = new Timer(1000);
@@ -50,6 +56,13 @@ namespace JX1Launcher.Services
             // Subscribe to process detector events
             _processDetector.ProcessDetected += OnProcessDetected;
             _processDetector.ProcessClosed += OnProcessClosed;
+
+            // Subscribe to auto-login events
+            _autoLoginService.LoginStarted += OnLoginStarted;
+            _autoLoginService.LoginCompleted += OnLoginCompleted;
+            _autoLoginService.LoginFailed += OnLoginFailed;
+            _autoLoginService.Disconnected += OnDisconnected;
+            _autoLoginService.Reconnecting += OnReconnecting;
         }
 
         // ========================================
@@ -197,6 +210,22 @@ namespace JX1Launcher.Services
                 account.ResetStats();
 
                 AccountStatusChanged?.Invoke(this, new AccountEventArgs(account));
+
+                // Auto-login if enabled
+                if (account.AutoLogin && !string.IsNullOrEmpty(account.Username))
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(2000); // Wait for game to fully load
+                        await _autoLoginService.AttemptLogin(account);
+                    });
+                }
+
+                // Start connection monitoring if auto-reconnect is enabled
+                if (account.AutoReconnect)
+                {
+                    StartConnectionMonitoring(account);
+                }
 
                 return true;
             }
@@ -543,10 +572,82 @@ namespace JX1Launcher.Services
         }
 
         /// <summary>
+        /// Start connection monitoring for an account
+        /// </summary>
+        private void StartConnectionMonitoring(AccountProfile account)
+        {
+            // Stop existing monitor if any
+            StopConnectionMonitoring(account.Id);
+
+            var cts = new CancellationTokenSource();
+            _connectionMonitors[account.Id] = cts;
+
+            // Start monitoring in background
+            _ = Task.Run(async () =>
+            {
+                await _autoLoginService.MonitorConnection(account, cts.Token);
+            });
+        }
+
+        /// <summary>
+        /// Stop connection monitoring for an account
+        /// </summary>
+        private void StopConnectionMonitoring(int accountId)
+        {
+            if (_connectionMonitors.TryGetValue(accountId, out var cts))
+            {
+                cts.Cancel();
+                _connectionMonitors.Remove(accountId);
+            }
+        }
+
+        // ========================================
+        // Auto-Login Event Handlers
+        // ========================================
+
+        private void OnLoginStarted(object? sender, LoginEventArgs e)
+        {
+            Console.WriteLine($"[{e.Account.Nickname}] Login started: {e.Message}");
+            AccountStatusChanged?.Invoke(this, new AccountEventArgs(e.Account, e.Message));
+        }
+
+        private void OnLoginCompleted(object? sender, LoginEventArgs e)
+        {
+            Console.WriteLine($"[{e.Account.Nickname}] Login completed: {e.Message}");
+            AccountStatusChanged?.Invoke(this, new AccountEventArgs(e.Account, e.Message));
+        }
+
+        private void OnLoginFailed(object? sender, LoginEventArgs e)
+        {
+            Console.WriteLine($"[{e.Account.Nickname}] Login failed: {e.Message}");
+            e.Account.Status = AccountStatus.Error;
+            AccountStatusChanged?.Invoke(this, new AccountEventArgs(e.Account, e.Message));
+        }
+
+        private void OnDisconnected(object? sender, LoginEventArgs e)
+        {
+            Console.WriteLine($"[{e.Account.Nickname}] Disconnected: {e.Message}");
+            AccountStatusChanged?.Invoke(this, new AccountEventArgs(e.Account, e.Message));
+        }
+
+        private void OnReconnecting(object? sender, LoginEventArgs e)
+        {
+            Console.WriteLine($"[{e.Account.Nickname}] Reconnecting: {e.Message}");
+            AccountStatusChanged?.Invoke(this, new AccountEventArgs(e.Account, e.Message));
+        }
+
+        /// <summary>
         /// Cleanup and dispose
         /// </summary>
         public void Dispose()
         {
+            // Stop all connection monitors
+            foreach (var cts in _connectionMonitors.Values)
+            {
+                cts.Cancel();
+            }
+            _connectionMonitors.Clear();
+
             StopMonitoring();
             _monitoringTimer?.Dispose();
             _processDetector?.Dispose();

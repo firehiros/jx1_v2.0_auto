@@ -5,6 +5,18 @@ using System.Runtime.CompilerServices;
 namespace JX1Launcher.Models
 {
     /// <summary>
+    /// Bot mode enumeration
+    /// </summary>
+    public enum BotMode
+    {
+        Disabled = 0,   // Manual control
+        Combat = 1,     // Combat only
+        Farming = 2,    // Farming mode with routes
+        Questing = 3,   // Quest automation
+        Custom = 4      // Custom scripted behavior
+    }
+
+    /// <summary>
     /// Item quality enumeration
     /// </summary>
     public enum ItemQuality

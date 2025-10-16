@@ -140,19 +140,15 @@ namespace JX1Launcher.ViewModels
 
         private void ExecuteAddAccount()
         {
-            // Create new account with default values
-            var newAccount = new AccountProfile
+            // Open add account dialog
+            var dialog = new Views.AddAccountDialog();
+            bool? result = dialog.ShowDialog();
+
+            if (result == true && dialog.NewAccount != null)
             {
-                Nickname = $"Account {TotalAccountsCount + 1}",
-                Username = "",
-                Enabled = true,
-                BotMode = BotMode.Farming,
-                Settings = BotSettings.CreateDefault()
-            };
-
-            _accountManager.AddAccount(newAccount);
-
-            // TODO: Open edit dialog for user to fill in details
+                _accountManager.AddAccount(dialog.NewAccount);
+                ExecuteRefresh();
+            }
         }
 
         private void ExecuteRefresh()
