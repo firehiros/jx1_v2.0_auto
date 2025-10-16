@@ -92,6 +92,9 @@ set(GAME_SOURCES
     src/game/Inventory.h
     src/game/SkillManager.cpp
     src/game/SkillManager.h
+    src/game/BuffManager.h
+    src/game/GameActions.cpp
+    src/game/GameActions.h
 )
 
 set(BOT_SOURCES
@@ -129,6 +132,7 @@ set(UTILS_SOURCES
     src/utils/Math.h
     src/utils/Patterns.h
     src/utils/Offsets.h
+    src/utils/Offsets.cpp
 )
 
 # ImGui sources
