@@ -198,8 +198,9 @@ bool D3D9Hook::InitializeImGui()
     Logger::Info("[D3D9Hook] Initializing ImGui...");
 
     // Get game window
-    m_device->GetCreationParameters(&m_presentParams);
-    m_gameWindow = m_presentParams.hFocusWindow;
+    D3DDEVICE_CREATION_PARAMETERS creationParams;
+    m_device->GetCreationParameters(&creationParams);
+    m_gameWindow = creationParams.hFocusWindow;
 
     // Setup ImGui context
     IMGUI_CHECKVERSION();

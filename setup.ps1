@@ -100,7 +100,48 @@ $buildDir = "core_dll/build_$Architecture"
 if (Test-Path $buildDir)
 {
     Write-Info "Cleaning old build directory..."
-    Remove-Item -Recurse -Force $buildDir
+
+    # Try to remove with retry logic
+    $retryCount = 0
+    $maxRetries = 5
+    $removed = $false
+
+    while (-not $removed -and $retryCount -lt $maxRetries)
+    {
+        try
+        {
+            # Kill any processes that might be locking files
+            if ($retryCount -gt 0)
+            {
+                Write-Warning "Attempt $retryCount - Trying to close blocking processes..."
+                Get-Process | Where-Object {$_.Name -match "msbuild|cmake|cl|link"} | Stop-Process -Force -ErrorAction SilentlyContinue
+                Start-Sleep -Seconds 1
+            }
+
+            Remove-Item -Recurse -Force $buildDir -ErrorAction Stop
+            $removed = $true
+            Write-Success "[OK] Old build directory removed"
+        }
+        catch
+        {
+            $retryCount++
+            if ($retryCount -lt $maxRetries)
+            {
+                Write-Warning "Failed to remove build directory (attempt $retryCount/$maxRetries)"
+                Write-Warning "Retrying in 2 seconds..."
+                Start-Sleep -Seconds 2
+            }
+            else
+            {
+                Write-ErrorMsg "Could not remove build directory after $maxRetries attempts!"
+                Write-ErrorMsg "Please close Visual Studio, MSBuild, or any process using files in:"
+                Write-ErrorMsg "  $buildDir"
+                Write-Host ""
+                Write-Warning "You can also try: Get-Process | Where-Object {`$_.Name -match 'msbuild|cmake'} | Stop-Process -Force"
+                exit 1
+            }
+        }
+    }
 }
 
 # Create build directory

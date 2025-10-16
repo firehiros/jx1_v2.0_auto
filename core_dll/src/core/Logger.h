@@ -12,6 +12,14 @@
 #include <mutex>
 #include <Windows.h>
 
+// Undefine Windows macros that conflict with our enums
+#ifdef ERROR
+#undef ERROR
+#endif
+#ifdef SUCCESS
+#undef SUCCESS
+#endif
+
 /**
  * Log levels
  */
