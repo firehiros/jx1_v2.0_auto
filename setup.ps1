@@ -16,16 +16,16 @@ $ProgressPreference = "SilentlyContinue"
 
 # Colors
 function Write-Success { param($msg) Write-Host $msg -ForegroundColor Green }
-function Write-Error { param($msg) Write-Host $msg -ForegroundColor Red }
+function Write-ErrorMsg { param($msg) Write-Host $msg -ForegroundColor Red }
 function Write-Info { param($msg) Write-Host $msg -ForegroundColor Cyan }
 function Write-Warning { param($msg) Write-Host $msg -ForegroundColor Yellow }
 function Write-Step { param($msg) Write-Host "`n$msg" -ForegroundColor Yellow }
 
 # Banner
 Write-Host ""
-Write-Host "╔════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     JX1 Auto v2.0 - Automated Setup       ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════╝" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "     JX1 Auto v2.0 - Automated Setup       " -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Info "Configuration:"
 Write-Host "  Architecture: $Architecture"
@@ -33,41 +33,50 @@ Write-Host "  Build Type:   $Config"
 Write-Host ""
 
 # Step 0: Check dependencies
-if (-not $SkipDependencyCheck) {
+if (-not $SkipDependencyCheck)
+{
     Write-Step "[0/4] Checking dependencies..."
 
     $missingDeps = @()
 
-    if (-not (Get-Command cmake -ErrorAction SilentlyContinue)) {
+    if (-not (Get-Command cmake -ErrorAction SilentlyContinue))
+    {
         $missingDeps += "CMake"
     }
 
-    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue))
+    {
         $missingDeps += ".NET 7 SDK"
     }
 
     $dxsdkPath = "C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)"
-    if (-not (Test-Path $dxsdkPath)) {
+    if (-not (Test-Path $dxsdkPath))
+    {
         $missingDeps += "DirectX SDK (June 2010)"
     }
 
     # Check third-party libraries
-    if (-not (Test-Path "core_dll/third_party/minhook/bin/MinHook.x64.dll")) {
+    if (-not (Test-Path "core_dll/third_party/minhook/bin/MinHook.x64.dll"))
+    {
         $missingDeps += "MinHook"
     }
 
-    if (-not (Test-Path "core_dll/third_party/imgui/imgui.h")) {
+    if (-not (Test-Path "core_dll/third_party/imgui/imgui.h"))
+    {
         $missingDeps += "ImGui"
     }
 
-    if (-not (Test-Path "core_dll/third_party/json/single_include/nlohmann/json.hpp")) {
+    if (-not (Test-Path "core_dll/third_party/json/single_include/nlohmann/json.hpp"))
+    {
         $missingDeps += "nlohmann/json"
     }
 
-    if ($missingDeps.Count -gt 0) {
-        Write-Error "Missing dependencies:"
-        foreach ($dep in $missingDeps) {
-            Write-Error "  ✗ $dep"
+    if ($missingDeps.Count -gt 0)
+    {
+        Write-ErrorMsg "Missing dependencies:"
+        foreach ($dep in $missingDeps)
+        {
+            Write-ErrorMsg "  [X] $dep"
         }
         Write-Host ""
         Write-Warning "Run .\check_dependencies.ps1 for detailed information"
@@ -75,8 +84,10 @@ if (-not $SkipDependencyCheck) {
         exit 1
     }
 
-    Write-Success "✓ All dependencies found"
-} else {
+    Write-Success "[OK] All dependencies found"
+}
+else
+{
     Write-Warning "Skipping dependency check..."
 }
 
@@ -86,7 +97,8 @@ Write-Step "[1/4] Configuring core_dll ($Architecture)..."
 $buildDir = "core_dll/build_$Architecture"
 
 # Clean old build if exists
-if (Test-Path $buildDir) {
+if (Test-Path $buildDir)
+{
     Write-Info "Cleaning old build directory..."
     Remove-Item -Recurse -Force $buildDir
 }
@@ -95,20 +107,26 @@ if (Test-Path $buildDir) {
 New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
 Push-Location $buildDir
 
-try {
+try
+{
     Write-Info "Running CMake configuration..."
     cmake .. -A $Architecture -DCMAKE_BUILD_TYPE=$Config
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         throw "CMake configuration failed!"
     }
 
-    Write-Success "✓ CMake configuration successful"
-} catch {
-    Write-Error "Configuration failed: $_"
+    Write-Success "[OK] CMake configuration successful"
+}
+catch
+{
+    Write-ErrorMsg "Configuration failed: $_"
     Pop-Location
     exit 1
-} finally {
+}
+finally
+{
     Pop-Location
 }
 
@@ -117,20 +135,26 @@ Write-Step "[2/4] Building core_dll..."
 
 Push-Location $buildDir
 
-try {
+try
+{
     Write-Info "Compiling C++ code..."
     cmake --build . --config $Config --parallel
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         throw "Build failed!"
     }
 
-    Write-Success "✓ core_dll built successfully"
-} catch {
-    Write-Error "Build failed: $_"
+    Write-Success "[OK] core_dll built successfully"
+}
+catch
+{
+    Write-ErrorMsg "Build failed: $_"
     Pop-Location
     exit 1
-} finally {
+}
+finally
+{
     Pop-Location
 }
 
@@ -139,27 +163,34 @@ Write-Step "[3/4] Building launcher..."
 
 Push-Location launcher
 
-try {
+try
+{
     Write-Info "Restoring NuGet packages..."
     dotnet restore
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         throw "NuGet restore failed!"
     }
 
     Write-Info "Building launcher..."
     dotnet build -c $Config
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0)
+    {
         throw "Launcher build failed!"
     }
 
-    Write-Success "✓ Launcher built successfully"
-} catch {
-    Write-Error "Launcher build failed: $_"
+    Write-Success "[OK] Launcher built successfully"
+}
+catch
+{
+    Write-ErrorMsg "Launcher build failed: $_"
     Pop-Location
     exit 1
-} finally {
+}
+finally
+{
     Pop-Location
 }
 
@@ -172,36 +203,47 @@ $launcherPath = "launcher/bin/$Config/net7.0-windows/JX1Launcher.exe"
 
 $verifySuccess = $true
 
-if (Test-Path $dllPath) {
+if (Test-Path $dllPath)
+{
     $dllSize = (Get-Item $dllPath).Length
-    Write-Success "✓ Core DLL:    $dllPath ($([math]::Round($dllSize/1KB, 2)) KB)"
-} else {
-    Write-Error "✗ Core DLL not found: $dllPath"
+    $dllSizeKB = [math]::Round($dllSize/1KB, 2)
+    Write-Success "[OK] Core DLL:    $dllPath ($dllSizeKB KB)"
+}
+else
+{
+    Write-ErrorMsg "[X] Core DLL not found: $dllPath"
     $verifySuccess = $false
 }
 
-if (Test-Path $minHookDll) {
-    Write-Success "✓ MinHook DLL: $minHookDll"
-} else {
-    Write-Warning "⚠ MinHook DLL not found: $minHookDll"
+if (Test-Path $minHookDll)
+{
+    Write-Success "[OK] MinHook DLL: $minHookDll"
+}
+else
+{
+    Write-Warning "[WARN] MinHook DLL not found: $minHookDll"
 }
 
-if (Test-Path $launcherPath) {
-    Write-Success "✓ Launcher:    $launcherPath"
-} else {
-    Write-Error "✗ Launcher not found: $launcherPath"
+if (Test-Path $launcherPath)
+{
+    Write-Success "[OK] Launcher:    $launcherPath"
+}
+else
+{
+    Write-ErrorMsg "[X] Launcher not found: $launcherPath"
     $verifySuccess = $false
 }
 
 # Summary
 Write-Host ""
-Write-Host "╔════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║           Setup Complete!                 ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════╝" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "           Setup Complete!                 " -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
-if ($verifySuccess) {
-    Write-Success "✓ Build successful!"
+if ($verifySuccess)
+{
+    Write-Success "[OK] Build successful!"
     Write-Host ""
     Write-Info "To run the launcher:"
     Write-Host "  .\run.ps1"
@@ -216,8 +258,10 @@ if ($verifySuccess) {
     Write-Host "  3. Click 'Inject DLL'"
     Write-Host "  4. Press INSERT in game"
     Write-Host ""
-} else {
-    Write-Error "✗ Some files are missing. Build may have failed."
+}
+else
+{
+    Write-ErrorMsg "[X] Some files are missing. Build may have failed."
     Write-Host ""
     Write-Warning "Check the error messages above for details."
     exit 1
